@@ -36,7 +36,7 @@ struct CookingScreen: View {
             .id(stepIndex)
 
             HStack {
-                iconButton("ingredients.title", symbol: "checklist", action: onIngredients)
+                RecipeIconButton("ingredients.title", symbol: "checklist", action: onIngredients)
                 Spacer(minLength: 12)
                 if timerConfirmation != nil {
                     Label("timer.started", systemImage: "timer")
@@ -94,18 +94,20 @@ struct CookingScreen: View {
                 .accessibilityElement(children: .ignore)
                 .accessibilityLabel(Text("Step \(stepIndex + 1) of \(recipe.steps.count)"))
             }
-            .padding(.horizontal, 96)
+            .padding(.horizontal, RecipeIconButton.size * 2 + 8)
 
             HStack {
-                iconButton("cooking.close", symbol: "xmark", action: onClose)
+                RecipeIconButton("cooking.close", symbol: "xmark", action: onClose)
                 Spacer()
                 HStack(spacing: 3) {
-                    iconButton("cooking.previous", symbol: "chevron.left") { stepIndex = max(0, stepIndex - 1) }
+                    RecipeIconButton("cooking.previous", symbol: "chevron.left") {
+                        stepIndex = max(0, stepIndex - 1)
+                    }
                         .disabled(stepIndex == 0)
-                    iconButton("cooking.next", symbol: "chevron.right") {
+                    RecipeIconButton("cooking.next", symbol: "chevron.right") {
                         stepIndex = min(recipe.steps.count - 1, stepIndex + 1)
                     }
-                        .disabled(stepIndex == recipe.steps.count - 1)
+                    .disabled(stepIndex == recipe.steps.count - 1)
                 }
             }
         }
@@ -113,25 +115,8 @@ struct CookingScreen: View {
 
     private var visibleSteps: Range<Int> {
         let count = recipe.steps.count
-        let lower = max(0, min(stepIndex - 5, count - 11))
-        return lower..<min(lower + 11, count)
-    }
-
-    private func iconButton(
-        _ label: LocalizedStringKey,
-        symbol: String,
-        action: @escaping () -> Void
-    ) -> some View {
-        Button(action: action) {
-            Image(systemName: symbol)
-                .font(.system(size: 17, weight: .semibold))
-                .frame(width: 44, height: 44)
-                .contentShape(.circle)
-        }
-        .buttonStyle(.glass)
-        .buttonBorderShape(.circle)
-        .tint(.primary)
-        .accessibilityLabel(Text(label))
+        let lower = max(0, min(stepIndex - 3, count - 7))
+        return lower..<min(lower + 7, count)
     }
 
     private func startTimer(seconds: Int) {

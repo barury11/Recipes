@@ -16,6 +16,10 @@
 "ingredients.title" = "Ingredients";
 "cooking.start" = "Start Cooking";
 "settings.title" = "Settings";
+"settings.appearance" = "Appearance";
+"settings.appearance.classic" = "Classic";
+"settings.appearance.smart" = "Smart";
+"settings.appearance.smart.preview" = "Smart appearance is coming later. Recipes currently uses Classic.";
 "settings.ai" = "Artificial Intelligence";
 "settings.provider" = "Provider";
 "settings.provider.custom" = "Custom API";

@@ -48,39 +48,6 @@ struct IngredientsSheet: View {
     }
 }
 
-struct IngredientsBackdrop: View {
-    let availableHeight: CGFloat
-    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
-
-    var body: some View {
-        GeometryReader { geometry in
-            let systemBackground = Color(uiColor: .systemGroupedBackground)
-            let heightFraction = geometry.size.height / max(availableHeight, 1)
-            let expansion = min(max((heightFraction - 0.50) / 0.43, 0), 1)
-            let fade = expansion * expansion * (3 - 2 * expansion)
-
-            if reduceTransparency {
-                systemBackground
-            } else {
-                Rectangle()
-                    .fill(.ultraThinMaterial)
-                    .overlay {
-                        LinearGradient(
-                            stops: [
-                                .init(color: systemBackground.opacity(0.14 + 0.86 * fade), location: 0),
-                                .init(color: systemBackground.opacity(0.49 + 0.51 * fade), location: 0.54),
-                                .init(color: systemBackground, location: 1)
-                            ],
-                            startPoint: .top,
-                            endPoint: .bottom
-                        )
-                    }
-            }
-        }
-        .ignoresSafeArea()
-    }
-}
-
 enum AIProvider: String, CaseIterable, Identifiable {
     case openAI = "OpenAI"
     case anthropic = "Anthropic"
@@ -90,8 +57,14 @@ enum AIProvider: String, CaseIterable, Identifiable {
     var id: Self { self }
 }
 
-struct AISettingsSheet: View {
+private enum RecipeAppearance: String {
+    case classic
+    case smart
+}
+
+struct RecipeSettingsSheet: View {
     @Binding var provider: AIProvider
+    @AppStorage("recipeAppearance") private var appearance: RecipeAppearance = .classic
     @Environment(\.dismiss) private var dismiss
     @State private var apiKey = ""
     @State private var endpoint = ""
@@ -99,6 +72,20 @@ struct AISettingsSheet: View {
     var body: some View {
         NavigationStack {
             Form {
+                Section {
+                    Picker("settings.appearance", selection: $appearance) {
+                        Text("settings.appearance.classic").tag(RecipeAppearance.classic)
+                        Text("settings.appearance.smart").tag(RecipeAppearance.smart)
+                    }
+                    .pickerStyle(.segmented)
+                } header: {
+                    Text("settings.appearance")
+                } footer: {
+                    if appearance == .smart {
+                        Text("settings.appearance.smart.preview")
+                    }
+                }
+
                 Section {
                     Picker("settings.provider", selection: $provider) {
                         ForEach(AIProvider.allCases) { option in

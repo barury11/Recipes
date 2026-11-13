@@ -3,9 +3,10 @@
 Prototyp dla iPhone’a z iOS 26 lub nowszym. Otwórz `Recipes.xcodeproj` w Xcode 26+ i uruchom schemat **Recipes** w symulatorze iPhone’a.
 
 - Ekran przepisu pokazuje przykładowy krem z dyni, kategorię, czas i liczbę porcji.
-- **Składniki** otwierają checklistę. Zaznaczenia pozostają w pamięci do zamknięcia przepisu.
+- **Składniki** otwierają checklistę od razu na pełną wysokość. Zaznaczenia pozostają w pamięci do zamknięcia przepisu.
 - **Zacznij gotować** otwiera jeden krok naraz. Strzałki przełączają kroki, a przycisk checklisty otwiera te same Składniki co ekran przepisu.
 - Stuknij wyróżniony czas w tekście, by uruchomić minutnik Recipes przez systemowe AlarmKit. Przy pierwszym użyciu iOS może poprosić o zgodę na alarmy. Rozszerzenie Live Activities wyświetla odliczanie na ekranie blokady i w Dynamic Island.
+- W **Ustawieniach** można zapisać wybór **Klasyczny** lub **Inteligentny**. Prototyp wyświetla wygląd klasyczny.
 - W **Ustawieniach** można wybrać dostawcę AI i wpisać klucz w pole maskowane. Po zamknięciu arkusza klucz i ewentualny adres własnego API są usuwane.
 - Rozszerzenie pokazuje ten sam przykładowy przepis po wybraniu **Safari → Udostępnij → Przepisy / Recipes**. Jeśli skrót jest ukryty, przejdź do **Więcej** na liście aplikacji. **X** w rozszerzeniu wraca do Safari, a w aplikacji zamyka widok przepisu.
 - Prototyp korzysta z przykładowego przepisu. [Prompt do ekstrakcji](Docs/recipe-extraction-prompt.md) definiuje dzielenie instrukcji na kroki i oznaczanie czasów na potrzeby przyszłego importu z AI.

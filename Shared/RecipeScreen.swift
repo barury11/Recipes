@@ -47,13 +47,10 @@ struct RecipeScreen: View {
                 switch presented {
                 case .ingredients:
                     IngredientsSheet(recipe: recipe, checked: $checkedIngredients)
-                        .presentationDetents([.medium, .large])
-                        .presentationDragIndicator(.visible)
-                        .presentationBackground {
-                            IngredientsBackdrop(availableHeight: geometry.size.height)
-                        }
+                        .presentationDetents([.large])
+                        .presentationBackground(Color(uiColor: .systemGroupedBackground))
                 case .settings:
-                    AISettingsSheet(provider: $selectedProvider)
+                    RecipeSettingsSheet(provider: $selectedProvider)
                         .presentationDetents([.large])
                         .presentationDragIndicator(.visible)
                 }
@@ -126,9 +123,9 @@ struct RecipeScreen: View {
 
     private var header: some View {
         HStack {
-            roundButton("action.close", symbol: "xmark", action: onClose)
+            RecipeIconButton("action.close", symbol: "xmark", foreground: .white, action: onClose)
             Spacer()
-            roundButton("settings.title", symbol: "gearshape") {
+            RecipeIconButton("settings.title", symbol: "gearshape", foreground: .white) {
                 sheet = .settings
             }
         }
@@ -207,23 +204,6 @@ struct RecipeScreen: View {
         }
     }
 
-    private func roundButton(
-        _ title: LocalizedStringKey,
-        symbol: String,
-        action: @escaping () -> Void
-    ) -> some View {
-        Button(action: action) {
-            Image(systemName: symbol)
-                .font(.system(size: 19, weight: .semibold))
-                .foregroundStyle(.white)
-                .frame(width: 48, height: 48)
-                .contentShape(.circle)
-                .glassEffect(.regular.interactive(), in: .circle)
-        }
-        .buttonStyle(.plain)
-        .accessibilityLabel(Text(title))
-    }
-
     private func actionLabel(
         _ title: LocalizedStringKey,
         symbol: String,
@@ -238,6 +218,41 @@ struct RecipeScreen: View {
             .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, minHeight: 82)
             .contentShape(.capsule)
+    }
+}
+
+struct RecipeIconButton: View {
+    static let size: CGFloat = 48
+
+    private let title: LocalizedStringKey
+    private let symbol: String
+    private let foreground: Color
+    private let action: () -> Void
+    @Environment(\.isEnabled) private var isEnabled
+
+    init(
+        _ title: LocalizedStringKey,
+        symbol: String,
+        foreground: Color = .primary,
+        action: @escaping () -> Void
+    ) {
+        self.title = title
+        self.symbol = symbol
+        self.foreground = foreground
+        self.action = action
+    }
+
+    var body: some View {
+        Button(action: action) {
+            Image(systemName: symbol)
+                .font(.system(size: 19, weight: .semibold))
+                .foregroundStyle(foreground.opacity(isEnabled ? 1 : 0.35))
+                .frame(width: Self.size, height: Self.size)
+                .contentShape(.circle)
+                .glassEffect(.regular.interactive(isEnabled), in: .circle)
+        }
+        .buttonStyle(.plain)
+        .accessibilityLabel(Text(title))
     }
 }
 

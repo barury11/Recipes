@@ -16,6 +16,10 @@
 "ingredients.title" = "Składniki";
 "cooking.start" = "Zacznij gotować";
 "settings.title" = "Ustawienia";
+"settings.appearance" = "Wygląd";
+"settings.appearance.classic" = "Klasyczny";
+"settings.appearance.smart" = "Inteligentny";
+"settings.appearance.smart.preview" = "Wygląd inteligentny pojawi się później. Na razie Przepisy wyświetlają wygląd klasyczny.";
 "settings.ai" = "Sztuczna inteligencja";
 "settings.provider" = "Dostawca";
 "settings.provider.custom" = "Własne API";
