@@ -115,14 +115,15 @@ struct RecipeImportView: View {
         } catch is CancellationError {
         } catch {
             guard !Task.isCancelled else { return }
-            self.error = switch error as? RecipeImportError {
+            let failure = error as? RecipeImportError
+            if let key = failure?.geminiErrorKey {
+                self.error = LocalizedStringKey(key)
+                return
+            }
+            self.error = switch failure {
             case .missingKey: fromShare && RecipeFiles.shared == nil ? "import.error.key.share" : "import.error.key"
-            case .invalidKey: "import.error.invalidKey"
-            case .quota: "import.error.quota"
             case .noRecipe: "import.error.noRecipe"
-            case .invalidResponse: "import.error.response"
             case .storage: "import.error.storage"
-            case .service: "import.error.service"
             default: "import.error.page"
             }
         }

@@ -64,7 +64,6 @@
 "import.retry" = "Spróbuj ponownie";
 "import.error.key" = "Dodaj klucz API Google Gemini w Ustawieniach i spróbuj ponownie.";
 "import.error.key.share" = "Dodaj klucz API Google Gemini w Ustawieniach tutaj. W tej instalacji Safari i aplikacja Przepisy zapisują klucze osobno.";
-"import.error.invalidKey" = "Sprawdź klucz API Google Gemini i jego uprawnienia w Google AI Studio.";
 "import.error.quota" = "Osiągnięto limit Google Gemini. Spróbuj później lub sprawdź limit i rozliczenia projektu.";
 "import.error.noRecipe" = "Na tej stronie nie znaleziono kompletnego przepisu.";
 "import.error.response" = "Odczytany przepis był niepełny lub nieprawidłowy.";
@@ -76,3 +75,11 @@
 "import.export.done" = "Przepis został zapisany.";
 "import.export.help" = "W Plikach wybierz Na moim iPhonie → Przepisy. Jeśli folderu nie ma, otwórz raz aplikację Przepisy.";
 "import.preview" = "Wyświetl przepis";
+"settings.key.test" = "Sprawdź klucz Gemini";
+"settings.key.success" = "Klucz działa z Gemini 3.5 Flash-Lite. Stuknij Gotowe, żeby go zapisać.";
+"settings.key.format" = "Wklej cały klucz API z Google AI Studio, bez spacji i cudzysłowów.";
+"import.error.invalidKey" = "Google odrzucił klucz. Skopiuj aktualny klucz autoryzacyjny z Google AI Studio.";
+"import.error.permission" = "Google odmówił dostępu do projektu lub modelu. Sprawdź stan projektu i ograniczenia klucza w Google AI Studio.";
+"import.error.apiDisabled" = "Włącz Generative Language API w projekcie Google Cloud, do którego należy klucz.";
+"import.error.billing" = "Google zablokował generowanie z powodu rozliczeń lub dostępu do darmowego planu. Sprawdź stan projektu w Google AI Studio.";
+"import.error.modelUnavailable" = "Gemini 3.5 Flash-Lite jest niedostępny dla tego projektu. Sprawdź dostępność modelu w Google AI Studio.";

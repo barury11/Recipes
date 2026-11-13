@@ -30,9 +30,7 @@ enum GeminiKey {
             guard status == errSecSuccess || status == errSecItemNotFound else { throw Failure.storage }
             return
         }
-        guard clean.utf8.count <= 256, clean.unicodeScalars.allSatisfy({
-            CharacterSet(charactersIn: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_").contains($0)
-        }) else { throw Failure.invalid }
+        try validate(clean)
         let changes = [kSecValueData as String: Data(clean.utf8)]
         var status = SecItemUpdate(request as CFDictionary, changes as CFDictionary)
         if status == errSecItemNotFound {
@@ -44,6 +42,13 @@ enum GeminiKey {
             }
         }
         guard status == errSecSuccess else { throw Failure.storage }
+    }
+
+    static func validate(_ value: String) throws {
+        // Google authorization keys contain a period after the AQ prefix.
+        guard !value.isEmpty, value.utf8.count <= 2_048,
+              value.range(of: #"\A[A-Za-z0-9._~-]+={0,2}\z"#, options: .regularExpression) != nil
+        else { throw Failure.invalid }
     }
 
     enum Failure: Error {

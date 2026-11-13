@@ -64,7 +64,6 @@
 "import.retry" = "Try Again";
 "import.error.key" = "Add a Google Gemini API key in Settings, then try again.";
 "import.error.key.share" = "Add a Google Gemini API key in Settings here. This installation stores separate keys for Safari and the Recipes app.";
-"import.error.invalidKey" = "Check your Google Gemini API key and its permissions in Google AI Studio.";
 "import.error.quota" = "Google Gemini’s limit was reached. Try later or check the project quota and billing.";
 "import.error.noRecipe" = "No complete recipe was found on this page.";
 "import.error.response" = "The extracted recipe was incomplete or invalid.";
@@ -76,3 +75,11 @@
 "import.export.done" = "The recipe is saved.";
 "import.export.help" = "Select On My iPhone → Recipes in Files. Open Recipes once if the folder is missing.";
 "import.preview" = "View Recipe";
+"settings.key.test" = "Test Gemini key";
+"settings.key.success" = "The key works with Gemini 3.5 Flash-Lite. Tap Done to save it.";
+"settings.key.format" = "Paste the complete API key from Google AI Studio, without spaces or quotation marks.";
+"import.error.invalidKey" = "Google rejected the key. Copy a current authorization key from Google AI Studio.";
+"import.error.permission" = "Google denied access to this project or model. Check the project status and key restrictions in Google AI Studio.";
+"import.error.apiDisabled" = "Enable Generative Language API in the Google Cloud project that owns this key.";
+"import.error.billing" = "Google denied generation because of billing or free-tier eligibility. Check this project’s status in Google AI Studio.";
+"import.error.modelUnavailable" = "Gemini 3.5 Flash-Lite is unavailable for this project. Check model availability in Google AI Studio.";

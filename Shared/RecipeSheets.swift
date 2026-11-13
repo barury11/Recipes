@@ -67,6 +67,8 @@ struct RecipeSettingsSheet: View {
     @Environment(\.dismiss) private var dismiss
     @State private var apiKey = GeminiKey.load() ?? ""
     @State private var keyError: LocalizedStringKey?
+    @State private var testStatus: LocalizedStringKey?
+    @State private var testTask: Task<Void, Never>?
 
     var body: some View {
         NavigationStack {
@@ -97,7 +99,23 @@ struct RecipeSettingsSheet: View {
                     SecureField("settings.key", text: $apiKey)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
+                        .disabled(testTask != nil)
                     LabeledContent("settings.model") { Text("Gemini 3.5 Flash-Lite") }
+                    Button {
+                        checkKey()
+                    } label: {
+                        HStack {
+                            Text("settings.key.test")
+                            if testTask != nil {
+                                Spacer()
+                                ProgressView().controlSize(.small)
+                            }
+                        }
+                    }
+                    .disabled(testTask != nil || apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                    if let testStatus {
+                        Text(testStatus).font(.footnote).foregroundStyle(.secondary)
+                    }
                 } footer: {
                     Text("settings.gemini.help")
                 }
@@ -114,11 +132,12 @@ struct RecipeSettingsSheet: View {
                             try GeminiKey.save(apiKey)
                             dismiss()
                         } catch GeminiKey.Failure.invalid {
-                            keyError = "import.error.invalidKey"
+                            keyError = "settings.key.format"
                         } catch {
                             keyError = "settings.key.error"
                         }
                     }
+                    .disabled(testTask != nil)
                 }
             }
             .alert("import.failed", isPresented: Binding(
@@ -128,6 +147,26 @@ struct RecipeSettingsSheet: View {
                 Button("action.done", role: .cancel) {}
             } message: {
                 if let keyError { Text(keyError) }
+            }
+            .onChange(of: apiKey) { _, _ in testStatus = nil }
+            .onDisappear { testTask?.cancel() }
+        }
+    }
+
+    private func checkKey() {
+        let candidate = apiKey
+        testStatus = nil
+        testTask = Task {
+            defer { testTask = nil }
+            do {
+                try await RecipeImporter.testKey(candidate)
+                if !Task.isCancelled { testStatus = "settings.key.success" }
+            } catch GeminiKey.Failure.invalid {
+                if !Task.isCancelled { testStatus = "settings.key.format" }
+            } catch {
+                guard !Task.isCancelled else { return }
+                let message = (error as? RecipeImportError)?.geminiErrorKey ?? "import.error.service"
+                testStatus = LocalizedStringKey(message)
             }
         }
     }

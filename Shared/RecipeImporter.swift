@@ -4,11 +4,36 @@ import UniformTypeIdentifiers
 import UIKit
 
 enum RecipeImportError: Error {
-    case page, missingKey, invalidKey, quota, service, noRecipe, invalidResponse, storage
+    case page, missingKey, invalidKey, permission, apiDisabled, billing, modelUnavailable, quota, service
+    case noRecipe, invalidResponse, storage
+
+    var geminiErrorKey: String? {
+        switch self {
+        case .invalidKey: "import.error.invalidKey"
+        case .permission: "import.error.permission"
+        case .apiDisabled: "import.error.apiDisabled"
+        case .billing: "import.error.billing"
+        case .modelUnavailable: "import.error.modelUnavailable"
+        case .quota: "import.error.quota"
+        case .service: "import.error.service"
+        case .invalidResponse: "import.error.response"
+        default: nil
+        }
+    }
 }
 
 enum RecipeImporter {
     static let model = "gemini-3.5-flash-lite"
+
+    static func testKey(_ key: String) async throws {
+        let key = key.trimmingCharacters(in: .whitespacesAndNewlines)
+        try GeminiKey.validate(key)
+        let body: [String: Any] = [
+            "contents": [["role": "user", "parts": [["text": "Reply with the word OK."]]]],
+            "generationConfig": ["thinkingConfig": ["thinkingLevel": "MINIMAL"], "maxOutputTokens": 64]
+        ]
+        _ = try await generate(body, key: key)
+    }
 
     static func run(page: RecipePage) async throws -> SavedRecipe {
         let metadata = page.metadata(from: page.jsonLD)
@@ -52,11 +77,6 @@ enum RecipeImporter {
 
     private static func extract(_ page: RecipePage, key: String) async throws -> RecipeFields {
         guard !page.text.isEmpty || !page.jsonLD.isEmpty else { throw RecipeImportError.page }
-        let url = URL(string: "https://generativelanguage.googleapis.com/v1beta/models/\(model):generateContent")!
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue(key, forHTTPHeaderField: "x-goog-api-key")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         let source: [String: Any] = ["title": page.title, "text": page.text,
             "structuredData": String(page.jsonLD.joined(separator: "\n").prefix(9_000))]
         let sourceData = try JSONSerialization.data(withJSONObject: source)
@@ -86,27 +106,7 @@ enum RecipeImporter {
             "generationConfig": ["responseMimeType": "application/json", "responseJsonSchema": schema,
                                  "thinkingConfig": ["thinkingLevel": "MINIMAL"], "maxOutputTokens": 3072]
         ]
-        request.httpBody = try JSONSerialization.data(withJSONObject: body)
-
-        let data: Data
-        let response: HTTPURLResponse
-        do { (data, response) = try await RecipeHTTP.google(request) }
-        catch is CancellationError { throw CancellationError() }
-        catch { throw RecipeImportError.service }
-        switch response.statusCode {
-        case 200: break
-        case 401, 403: throw RecipeImportError.invalidKey
-        case 429: throw RecipeImportError.quota
-        case 400:
-            let error = try? JSONDecoder().decode(GoogleFailure.self, from: data)
-            if error?.error.message.localizedCaseInsensitiveContains("API key") == true { throw RecipeImportError.invalidKey }
-            throw RecipeImportError.service
-        default: throw RecipeImportError.service
-        }
-        guard let envelope = try? JSONDecoder().decode(GoogleResponse.self, from: data),
-              let candidate = envelope.candidates.first, candidate.finishReason == "STOP",
-              let content = candidate.content else { throw RecipeImportError.invalidResponse }
-        let payload = Data(content.parts.filter { $0.thought != true }.compactMap(\.text).joined().utf8)
+        let payload = Data(try await generate(body, key: key).utf8)
         guard (try? JSONDecoder().decode(Found.self, from: payload))?.found == true else {
             if (try? JSONDecoder().decode(Found.self, from: payload))?.found == false { throw RecipeImportError.noRecipe }
             throw RecipeImportError.invalidResponse
@@ -120,6 +120,52 @@ enum RecipeImporter {
             return !text.isEmpty && sourceText.contains(text)
         }) else { throw RecipeImportError.invalidResponse }
         return fields
+    }
+
+    private static func generate(_ body: [String: Any], key: String) async throws -> String {
+        let url = URL(string: "https://generativelanguage.googleapis.com/v1beta/models/\(model):generateContent")!
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue(key, forHTTPHeaderField: "x-goog-api-key")
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = try JSONSerialization.data(withJSONObject: body)
+
+        let data: Data
+        let response: HTTPURLResponse
+        do { (data, response) = try await RecipeHTTP.google(request) }
+        catch {
+            try Task.checkCancellation()
+            throw RecipeImportError.service
+        }
+        guard (200..<300).contains(response.statusCode) else {
+            throw googleError(status: response.statusCode, data: data)
+        }
+        guard let envelope = try? JSONDecoder().decode(GoogleResponse.self, from: data),
+              let candidate = envelope.candidates.first, candidate.finishReason == "STOP",
+              let content = candidate.content else { throw RecipeImportError.invalidResponse }
+        let text = content.parts.filter { $0.thought != true }.compactMap(\.text).joined()
+        guard !text.isEmpty else { throw RecipeImportError.invalidResponse }
+        return text
+    }
+
+    private static func googleError(status: Int, data: Data) -> RecipeImportError {
+        let error = (try? JSONDecoder().decode(GoogleFailure.self, from: data))?.error
+        let reasons = Set(error?.details?.compactMap(\.reason) ?? [])
+        let message = error?.message?.lowercased() ?? ""
+        if status == 429 { return .quota }
+        if status == 404 { return .modelUnavailable }
+        if !reasons.isDisjoint(with: ["API_KEY_INVALID", "API_KEY_EXPIRED", "API_KEY_NOT_FOUND", "API_KEY_UNKNOWN"])
+            || status == 401 || (status == 400 && (message.contains("api key not valid") || message.contains("api key expired"))) {
+            return .invalidKey
+        }
+        if reasons.contains("SERVICE_DISABLED") { return .apiDisabled }
+        if reasons.contains("BILLING_DISABLED") ||
+            ([400, 403].contains(status) && (message.contains("billing") ||
+                message.contains("free tier is not available") || message.contains("free tier is unavailable"))) {
+            return .billing
+        }
+        if status == 403 { return .permission }
+        return .service
     }
 
     private static func normalized(_ text: String) -> String {
@@ -194,7 +240,11 @@ enum RecipeImporter {
 
     private struct Found: Decodable { let found: Bool }
     private struct GoogleFailure: Decodable {
-        struct Status: Decodable { let message: String }
+        struct Status: Decodable {
+            struct Detail: Decodable { let reason: String? }
+            let message: String?
+            let details: [Detail]?
+        }
         let error: Status
     }
     private struct GoogleResponse: Decodable {
