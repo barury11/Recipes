@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct IngredientsSheet: View {
     let recipe: Recipe
@@ -32,15 +33,51 @@ struct IngredientsSheet: View {
                 }
                 .buttonStyle(.plain)
                 .accessibilityAddTraits(isChecked ? .isSelected : [])
+                .listRowBackground(Color.clear)
             }
+            .scrollContentBackground(.hidden)
             .navigationTitle("ingredients.title")
             .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackgroundVisibility(.hidden, for: .navigationBar)
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button("action.done") { dismiss() }
                 }
             }
         }
+    }
+}
+
+struct IngredientsBackdrop: View {
+    let availableHeight: CGFloat
+    @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
+
+    var body: some View {
+        GeometryReader { geometry in
+            let systemBackground = Color(uiColor: .systemGroupedBackground)
+            let heightFraction = geometry.size.height / max(availableHeight, 1)
+            let expansion = min(max((heightFraction - 0.50) / 0.43, 0), 1)
+            let fade = expansion * expansion * (3 - 2 * expansion)
+
+            if reduceTransparency {
+                systemBackground
+            } else {
+                Rectangle()
+                    .fill(.ultraThinMaterial)
+                    .overlay {
+                        LinearGradient(
+                            stops: [
+                                .init(color: systemBackground.opacity(0.14 + 0.86 * fade), location: 0),
+                                .init(color: systemBackground.opacity(0.49 + 0.51 * fade), location: 0.54),
+                                .init(color: systemBackground, location: 1)
+                            ],
+                            startPoint: .top,
+                            endPoint: .bottom
+                        )
+                    }
+            }
+        }
+        .ignoresSafeArea()
     }
 }
 

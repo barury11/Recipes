@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 
 struct RecipeScreen: View {
     let recipe: Recipe
@@ -7,6 +8,7 @@ struct RecipeScreen: View {
     @State private var sheet: Sheet?
     @State private var checkedIngredients: Set<Recipe.Ingredient.ID> = []
     @State private var selectedProvider: AIProvider = .openAI
+    @State private var ingredientAccent = DishAccent.fallback
     @ScaledMetric(relativeTo: .largeTitle) private var titleSize: CGFloat = 36
 
     private enum Sheet: String, Identifiable {
@@ -18,34 +20,65 @@ struct RecipeScreen: View {
 
     var body: some View {
         GeometryReader { geometry in
-            ScrollView {
-                VStack(spacing: 0) {
-                    header
-                    Spacer(minLength: 68)
-                    footer
+            ViewThatFits(in: .vertical) {
+                recipeLayout
+
+                ScrollView {
+                    recipeLayout
+                        .frame(minHeight: geometry.size.height)
                 }
-                .padding(.horizontal, 17)
-                .padding(.top, 9)
-                .padding(.bottom, 13)
-                .frame(minHeight: geometry.size.height)
+                .scrollBounceBehavior(.basedOnSize)
             }
-            .scrollIndicators(.hidden)
-        }
-        .background {
-            backdrop.ignoresSafeArea()
+            .background {
+                backdrop.ignoresSafeArea()
+            }
+            .sheet(item: $sheet) { presented in
+                switch presented {
+                case .ingredients:
+                    IngredientsSheet(recipe: recipe, checked: $checkedIngredients)
+                        .presentationDetents([.medium, .large])
+                        .presentationDragIndicator(.visible)
+                        .presentationBackground {
+                            IngredientsBackdrop(availableHeight: geometry.size.height)
+                        }
+                case .settings:
+                    AISettingsSheet(provider: $selectedProvider)
+                        .presentationDetents([.large])
+                        .presentationDragIndicator(.visible)
+                }
+            }
         }
         .preferredColorScheme(.dark)
-        .sheet(item: $sheet) { presented in
-            switch presented {
-            case .ingredients:
-                IngredientsSheet(recipe: recipe, checked: $checkedIngredients)
-                    .presentationDetents([.medium, .large])
-                    .presentationDragIndicator(.visible)
-            case .settings:
-                AISettingsSheet(provider: $selectedProvider)
-                    .presentationDetents([.large])
-                    .presentationDragIndicator(.visible)
-            }
+        .task(id: recipe.image) {
+            await updateIngredientAccent()
+        }
+    }
+
+    private var recipeLayout: some View {
+        VStack(spacing: 0) {
+            header
+            Spacer(minLength: 20)
+            footer
+        }
+        .padding(.horizontal, 17)
+        .padding(.top, 9)
+        .padding(.bottom, 13)
+        .frame(maxHeight: .infinity)
+    }
+
+    private func updateIngredientAccent() async {
+        ingredientAccent = .fallback
+        guard let image = UIImage(named: recipe.image)?.cgImage else { return }
+        let analysis = Task.detached(priority: .utility) {
+            DishAccent.extract(from: image)
+        }
+        let accent = await withTaskCancellationHandler {
+            await analysis.value
+        } onCancel: {
+            analysis.cancel()
+        }
+        if !Task.isCancelled, let accent {
+            ingredientAccent = accent
         }
     }
 
@@ -126,16 +159,20 @@ struct RecipeScreen: View {
                 Button {
                     sheet = .ingredients
                 } label: {
-                    actionLabel("ingredients.title", symbol: "checklist")
-                        .background {
-                            Capsule()
-                                .fill(Color(red: 1, green: 0.58, blue: 0.20))
-                        }
-                        .overlay {
-                            Capsule()
-                                .strokeBorder(.white.opacity(0.16), lineWidth: 1)
-                                .allowsHitTesting(false)
-                        }
+                    actionLabel(
+                        "ingredients.title",
+                        symbol: "checklist",
+                        foreground: ingredientAccent.labelColor
+                    )
+                    .background {
+                        Capsule()
+                            .fill(ingredientAccent.color)
+                    }
+                    .overlay {
+                        Capsule()
+                            .strokeBorder(.white.opacity(0.16), lineWidth: 1)
+                            .allowsHitTesting(false)
+                    }
                 }
                 .buttonStyle(RecipeButtonStyle())
 
@@ -174,13 +211,18 @@ struct RecipeScreen: View {
         .accessibilityLabel(Text(title))
     }
 
-    private func actionLabel(_ title: LocalizedStringKey, symbol: String) -> some View {
+    private func actionLabel(
+        _ title: LocalizedStringKey,
+        symbol: String,
+        foreground: Color = .white
+    ) -> some View {
         Label(title, systemImage: symbol)
             .font(.title2.weight(.semibold))
             .multilineTextAlignment(.center)
-            .foregroundStyle(.white)
+            .foregroundStyle(foreground)
             .padding(.horizontal, 20)
             .padding(.vertical, 16)
+            .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, minHeight: 82)
             .contentShape(.capsule)
     }
