@@ -26,7 +26,7 @@ struct CookingStepText: UIViewRepresentable {
 
     func updateUIView(_ view: UITextView, context: Context) {
         context.coordinator.onTimer = onTimer
-        let textSize = UIContentSizeCategory(dynamicTypeSize) ?? .large
+        let textSize = UIContentSizeCategory(dynamicTypeSize)
         let font = UIFontMetrics(forTextStyle: .title2).scaledFont(
             for: .systemFont(ofSize: 26),
             compatibleWith: UITraitCollection(preferredContentSizeCategory: textSize)
