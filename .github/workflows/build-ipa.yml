@@ -37,7 +37,7 @@ jobs:
           test -d "$extension"
           for bundle in "$app" "$extension"; do
             executable="$(/usr/libexec/PlistBuddy -c 'Print CFBundleExecutable' "$bundle/Info.plist")"
-            xcrun lipo -verify_arch arm64 "$bundle/$executable"
+            xcrun lipo "$bundle/$executable" -verify_arch arm64
             for language in en pl; do
               test -f "$bundle/$language.lproj/InfoPlist.strings"
               test -f "$bundle/$language.lproj/Localizable.strings"
