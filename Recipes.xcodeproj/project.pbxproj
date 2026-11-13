@@ -24,14 +24,31 @@
 		000000000000000000000035 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000000D /* InfoPlist.strings */;};
 		000000000000000000000040 /* DishAccent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000003F /* DishAccent.swift */;};
 		000000000000000000000041 /* DishAccent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 00000000000000000000003F /* DishAccent.swift */;};
+		000000000000000000000048 /* CookingStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000042 /* CookingStep.swift */;};
+		000000000000000000000049 /* CookingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000043 /* CookingScreen.swift */;};
+		00000000000000000000004A /* CookingStepText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000044 /* CookingStepText.swift */;};
+		00000000000000000000004B /* CookingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000045 /* CookingTimer.swift */;};
+		00000000000000000000004C /* CookingTimerMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000046 /* CookingTimerMetadata.swift */;};
+		00000000000000000000004D /* StopCookingTimerIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000047 /* StopCookingTimerIntent.swift */;};
+		00000000000000000000004E /* CookingStep.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000042 /* CookingStep.swift */;};
+		00000000000000000000004F /* CookingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000043 /* CookingScreen.swift */;};
+		000000000000000000000050 /* CookingStepText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000044 /* CookingStepText.swift */;};
+		000000000000000000000051 /* CookingTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000045 /* CookingTimer.swift */;};
+		000000000000000000000052 /* CookingTimerMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000046 /* CookingTimerMetadata.swift */;};
+		000000000000000000000057 /* CookingTimerWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000053 /* CookingTimerWidget.swift */;};
+		000000000000000000000058 /* CookingTimerMetadata.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000046 /* CookingTimerMetadata.swift */;};
+		000000000000000000000059 /* StopCookingTimerIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000047 /* StopCookingTimerIntent.swift */;};
+		00000000000000000000005C /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 000000000000000000000010 /* Localizable.strings */;};
+		000000000000000000000064 /* RecipesTimer.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 000000000000000000000055 /* RecipesTimer.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); };};
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		000000000000000000000029 /* PBXContainerItemProxy */ = {isa = PBXContainerItemProxy; containerPortal = 000000000000000000000027 /* Project object */; proxyType = 1; remoteGlobalIDString = 000000000000000000000028; remoteInfo = RecipesShare;};
+		000000000000000000000062 /* PBXContainerItemProxy */ = {isa = PBXContainerItemProxy; containerPortal = 000000000000000000000027 /* Project object */; proxyType = 1; remoteGlobalIDString = 000000000000000000000061; remoteInfo = RecipesTimer;};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		000000000000000000000026 /* Embed App Extensions */ = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; files = (000000000000000000000025 /* RecipesShare.appex in Embed App Extensions */,); dstPath = ""; dstSubfolderSpec = 13; name = "Embed App Extensions"; runOnlyForDeploymentPostprocessing = 0;};
+		000000000000000000000026 /* Embed App Extensions */ = {isa = PBXCopyFilesBuildPhase; buildActionMask = 2147483647; files = (000000000000000000000025 /* RecipesShare.appex in Embed App Extensions */, 000000000000000000000064 /* RecipesTimer.appex in Embed App Extensions */,); dstPath = ""; dstSubfolderSpec = 13; name = "Embed App Extensions"; runOnlyForDeploymentPostprocessing = 0;};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -53,42 +70,57 @@
 		000000000000000000000013 /* Recipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Recipes.app; sourceTree = BUILT_PRODUCTS_DIR;};
 		000000000000000000000014 /* RecipesShare.appex */ = {isa = PBXFileReference; explicitFileType = wrapper.app-extension; includeInIndex = 0; path = RecipesShare.appex; sourceTree = BUILT_PRODUCTS_DIR;};
 		00000000000000000000003F /* DishAccent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = DishAccent.swift; path = DishAccent.swift; sourceTree = "<group>";};
+		000000000000000000000042 /* CookingStep.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingStep.swift; sourceTree = "<group>";};
+		000000000000000000000043 /* CookingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingScreen.swift; sourceTree = "<group>";};
+		000000000000000000000044 /* CookingStepText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingStepText.swift; sourceTree = "<group>";};
+		000000000000000000000045 /* CookingTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingTimer.swift; sourceTree = "<group>";};
+		000000000000000000000046 /* CookingTimerMetadata.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingTimerMetadata.swift; sourceTree = "<group>";};
+		000000000000000000000047 /* StopCookingTimerIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StopCookingTimerIntent.swift; sourceTree = "<group>";};
+		000000000000000000000053 /* CookingTimerWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CookingTimerWidget.swift; sourceTree = "<group>";};
+		000000000000000000000054 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>";};
+		000000000000000000000055 /* RecipesTimer.appex */ = {isa = PBXFileReference; explicitFileType = wrapper.app-extension; includeInIndex = 0; path = RecipesTimer.appex; sourceTree = BUILT_PRODUCTS_DIR;};
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		000000000000000000000023 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
 		000000000000000000000037 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
+		00000000000000000000005B /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		000000000000000000000015 /* App */ = {isa = PBXGroup; children = (000000000000000000000001 /* RecipesApp.swift */, 000000000000000000000006 /* Info.plist */, 000000000000000000000009 /* InfoPlist.strings */, 000000000000000000000012 /* AppIcon.icon */,); path = App; sourceTree = "<group>";};
 		000000000000000000000016 /* Share */ = {isa = PBXGroup; children = (000000000000000000000002 /* ShareViewController.swift */, 00000000000000000000000A /* Info.plist */, 00000000000000000000000D /* InfoPlist.strings */,); path = Share; sourceTree = "<group>";};
-		000000000000000000000017 /* Shared */ = {isa = PBXGroup; children = (000000000000000000000003 /* Recipe.swift */, 000000000000000000000004 /* RecipeScreen.swift */, 000000000000000000000005 /* RecipeSheets.swift */, 00000000000000000000003F /* DishAccent.swift */, 000000000000000000000010 /* Localizable.strings */, 000000000000000000000011 /* Media.xcassets */,); path = Shared; sourceTree = "<group>";};
-		000000000000000000000018 /* Products */ = {isa = PBXGroup; children = (000000000000000000000013 /* Recipes.app */, 000000000000000000000014 /* RecipesShare.appex */,); sourceTree = "<group>";};
-		000000000000000000000019 /* Main Group */ = {isa = PBXGroup; children = (000000000000000000000015 /* App */, 000000000000000000000016 /* Share */, 000000000000000000000017 /* Shared */, 000000000000000000000018 /* Products */,); sourceTree = "<group>";};
+		000000000000000000000017 /* Shared */ = {isa = PBXGroup; children = (000000000000000000000003 /* Recipe.swift */, 000000000000000000000004 /* RecipeScreen.swift */, 000000000000000000000005 /* RecipeSheets.swift */, 00000000000000000000003F /* DishAccent.swift */, 000000000000000000000010 /* Localizable.strings */, 000000000000000000000011 /* Media.xcassets */, 000000000000000000000042 /* CookingStep.swift */, 000000000000000000000043 /* CookingScreen.swift */, 000000000000000000000044 /* CookingStepText.swift */, 000000000000000000000045 /* CookingTimer.swift */, 000000000000000000000046 /* CookingTimerMetadata.swift */, 000000000000000000000047 /* StopCookingTimerIntent.swift */,); path = Shared; sourceTree = "<group>";};
+		000000000000000000000018 /* Products */ = {isa = PBXGroup; children = (000000000000000000000013 /* Recipes.app */, 000000000000000000000014 /* RecipesShare.appex */, 000000000000000000000055 /* RecipesTimer.appex */,); sourceTree = "<group>";};
+		000000000000000000000019 /* Main Group */ = {isa = PBXGroup; children = (000000000000000000000015 /* App */, 000000000000000000000016 /* Share */, 000000000000000000000017 /* Shared */, 000000000000000000000018 /* Products */, 000000000000000000000056 /* TimerWidget */,); sourceTree = "<group>";};
+		000000000000000000000056 /* TimerWidget */ = {isa = PBXGroup; children = (000000000000000000000053 /* CookingTimerWidget.swift */, 000000000000000000000054 /* Info.plist */,); path = TimerWidget; sourceTree = "<group>";};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00000000000000000000002E /* Recipes */ = {isa = PBXNativeTarget; buildConfigurationList = 00000000000000000000002D /* Recipes */; buildPhases = (000000000000000000000022 /* Sources */, 000000000000000000000023 /* Frameworks */, 000000000000000000000024 /* Resources */, 000000000000000000000026 /* Embed App Extensions */,); buildRules = (); dependencies = (00000000000000000000002A /* PBXTargetDependency */,); name = Recipes; productName = Recipes; productReference = 000000000000000000000013 /* Recipes.app */; productType = "com.apple.product-type.application";};
+		00000000000000000000002E /* Recipes */ = {isa = PBXNativeTarget; buildConfigurationList = 00000000000000000000002D /* Recipes */; buildPhases = (000000000000000000000022 /* Sources */, 000000000000000000000023 /* Frameworks */, 000000000000000000000024 /* Resources */, 000000000000000000000026 /* Embed App Extensions */,); buildRules = (); dependencies = (00000000000000000000002A /* PBXTargetDependency */, 000000000000000000000063 /* PBXTargetDependency */,); name = Recipes; productName = Recipes; productReference = 000000000000000000000013 /* Recipes.app */; productType = "com.apple.product-type.application";};
 		000000000000000000000028 /* RecipesShare */ = {isa = PBXNativeTarget; buildConfigurationList = 00000000000000000000003B /* RecipesShare */; buildPhases = (000000000000000000000036 /* Sources */, 000000000000000000000037 /* Frameworks */, 000000000000000000000038 /* Resources */,); buildRules = (); dependencies = (); name = RecipesShare; productName = RecipesShare; productReference = 000000000000000000000014 /* RecipesShare.appex */; productType = "com.apple.product-type.app-extension";};
+		000000000000000000000061 /* RecipesTimer */ = {isa = PBXNativeTarget; buildConfigurationList = 000000000000000000000060 /* RecipesTimer */; buildPhases = (00000000000000000000005A /* Sources */, 00000000000000000000005B /* Frameworks */, 00000000000000000000005D /* Resources */,); buildRules = (); dependencies = (); name = RecipesTimer; productName = RecipesTimer; productReference = 000000000000000000000055 /* RecipesTimer.appex */; productType = "com.apple.product-type.app-extension";};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		000000000000000000000027 /* Project object */ = {isa = PBXProject; attributes = { LastUpgradeCheck = 2600; }; buildConfigurationList = 00000000000000000000003E /* Project */; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, pl, Base, ); mainGroup = 000000000000000000000019 /* Main Group */; productRefGroup = 000000000000000000000018 /* Products */; projectDirPath = ""; projectRoot = ""; targets = (00000000000000000000002E /* Recipes */, 000000000000000000000028 /* RecipesShare */,);};
+		000000000000000000000027 /* Project object */ = {isa = PBXProject; attributes = { LastUpgradeCheck = 2600; }; buildConfigurationList = 00000000000000000000003E /* Project */; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, pl, Base, ); mainGroup = 000000000000000000000019 /* Main Group */; productRefGroup = 000000000000000000000018 /* Products */; projectDirPath = ""; projectRoot = ""; targets = (00000000000000000000002E /* Recipes */, 000000000000000000000028 /* RecipesShare */, 000000000000000000000061 /* RecipesTimer */,);};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		000000000000000000000024 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000001E /* Localizable.strings in Resources */, 00000000000000000000001F /* Media.xcassets in Resources */, 000000000000000000000020 /* InfoPlist.strings in Resources */, 000000000000000000000021 /* AppIcon.icon in Resources */,); runOnlyForDeploymentPostprocessing = 0;};
 		000000000000000000000038 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (000000000000000000000033 /* Localizable.strings in Resources */, 000000000000000000000034 /* Media.xcassets in Resources */, 000000000000000000000035 /* InfoPlist.strings in Resources */,); runOnlyForDeploymentPostprocessing = 0;};
+		00000000000000000000005D /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000005C /* Localizable.strings in Resources */,); runOnlyForDeploymentPostprocessing = 0;};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		000000000000000000000022 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000001A /* RecipesApp.swift in Sources */, 00000000000000000000001B /* Recipe.swift in Sources */, 00000000000000000000001C /* RecipeScreen.swift in Sources */, 00000000000000000000001D /* RecipeSheets.swift in Sources */, 000000000000000000000040 /* DishAccent.swift in Sources */,); runOnlyForDeploymentPostprocessing = 0;};
-		000000000000000000000036 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000002F /* ShareViewController.swift in Sources */, 000000000000000000000030 /* Recipe.swift in Sources */, 000000000000000000000031 /* RecipeScreen.swift in Sources */, 000000000000000000000032 /* RecipeSheets.swift in Sources */, 000000000000000000000041 /* DishAccent.swift in Sources */,); runOnlyForDeploymentPostprocessing = 0;};
+		000000000000000000000022 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000001A /* RecipesApp.swift in Sources */, 00000000000000000000001B /* Recipe.swift in Sources */, 00000000000000000000001C /* RecipeScreen.swift in Sources */, 00000000000000000000001D /* RecipeSheets.swift in Sources */, 000000000000000000000040 /* DishAccent.swift in Sources */, 000000000000000000000048 /* CookingStep.swift in Sources */, 000000000000000000000049 /* CookingScreen.swift in Sources */, 00000000000000000000004A /* CookingStepText.swift in Sources */, 00000000000000000000004B /* CookingTimer.swift in Sources */, 00000000000000000000004C /* CookingTimerMetadata.swift in Sources */, 00000000000000000000004D /* StopCookingTimerIntent.swift in Sources */,); runOnlyForDeploymentPostprocessing = 0;};
+		000000000000000000000036 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (00000000000000000000002F /* ShareViewController.swift in Sources */, 000000000000000000000030 /* Recipe.swift in Sources */, 000000000000000000000031 /* RecipeScreen.swift in Sources */, 000000000000000000000032 /* RecipeSheets.swift in Sources */, 000000000000000000000041 /* DishAccent.swift in Sources */, 00000000000000000000004E /* CookingStep.swift in Sources */, 00000000000000000000004F /* CookingScreen.swift in Sources */, 000000000000000000000050 /* CookingStepText.swift in Sources */, 000000000000000000000051 /* CookingTimer.swift in Sources */, 000000000000000000000052 /* CookingTimerMetadata.swift in Sources */,); runOnlyForDeploymentPostprocessing = 0;};
+		00000000000000000000005A /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (000000000000000000000057 /* CookingTimerWidget.swift in Sources */, 000000000000000000000058 /* CookingTimerMetadata.swift in Sources */, 000000000000000000000059 /* StopCookingTimerIntent.swift in Sources */,); runOnlyForDeploymentPostprocessing = 0;};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
 		00000000000000000000002A /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = 000000000000000000000028 /* RecipesShare */; targetProxy = 000000000000000000000029 /* PBXContainerItemProxy */;};
+		000000000000000000000063 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = 000000000000000000000061 /* RecipesTimer */; targetProxy = 000000000000000000000062 /* PBXContainerItemProxy */;};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -103,11 +135,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 0.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.barury11.recipes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -118,11 +150,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = App/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 0.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.barury11.recipes;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -133,11 +165,11 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Share/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 0.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.barury11.recipes.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -149,11 +181,11 @@
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 2;
+				CURRENT_PROJECT_VERSION = 3;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Share/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
-				MARKETING_VERSION = 0.1.1;
+				MARKETING_VERSION = 0.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.barury11.recipes.share;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -196,12 +228,15 @@
 			};
 			name = Release;
 		};
+		00000000000000000000005E /* Debug */ = {isa = XCBuildConfiguration; buildSettings = { APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 3; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = TimerWidget/Info.plist; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"; MARKETING_VERSION = 0.1.2; PRODUCT_BUNDLE_IDENTIFIER = com.barury11.recipes.timer; PRODUCT_NAME = "$(TARGET_NAME)"; SKIP_INSTALL = YES; }; name = Debug;};
+		00000000000000000000005F /* Release */ = {isa = XCBuildConfiguration; buildSettings = { APPLICATION_EXTENSION_API_ONLY = YES; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 3; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = TimerWidget/Info.plist; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks"; MARKETING_VERSION = 0.1.2; PRODUCT_BUNDLE_IDENTIFIER = com.barury11.recipes.timer; PRODUCT_NAME = "$(TARGET_NAME)"; SKIP_INSTALL = YES; }; name = Release;};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
 		00000000000000000000002D /* Recipes */ = {isa = XCConfigurationList; buildConfigurations = (00000000000000000000002B /* Debug */, 00000000000000000000002C /* Release */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
 		00000000000000000000003B /* RecipesShare */ = {isa = XCConfigurationList; buildConfigurations = (000000000000000000000039 /* Debug */, 00000000000000000000003A /* Release */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
 		00000000000000000000003E /* Project */ = {isa = XCConfigurationList; buildConfigurations = (00000000000000000000003C /* Debug */, 00000000000000000000003D /* Release */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
+		000000000000000000000060 /* RecipesTimer */ = {isa = XCConfigurationList; buildConfigurations = (00000000000000000000005E /* Debug */, 00000000000000000000005F /* Release */,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
 /* End XCConfigurationList section */
 	};
 	rootObject = 000000000000000000000027 /* Project object */;

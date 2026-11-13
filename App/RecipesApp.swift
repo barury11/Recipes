@@ -5,7 +5,6 @@ struct RecipesApp: App {
     var body: some Scene {
         WindowGroup {
             RecipeLibrary()
-                .preferredColorScheme(.dark)
         }
     }
 }
@@ -50,6 +49,7 @@ private struct RecipeLibrary: View {
                 }
                 .navigationTitle("app.name")
             }
+            .preferredColorScheme(.dark)
         }
     }
 }

@@ -5,7 +5,6 @@ final class ShareViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        overrideUserInterfaceStyle = .dark
         view.backgroundColor = .black
 
         let host = UIHostingController(

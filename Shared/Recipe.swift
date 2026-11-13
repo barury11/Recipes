@@ -7,6 +7,7 @@ struct Recipe {
     let servings: LocalizedStringKey
     let image: String
     let ingredients: [Ingredient]
+    let steps: [CookingStep]
 
     struct Ingredient: Identifiable {
         let id: String
@@ -28,6 +29,7 @@ struct Recipe {
             .init(id: "cream", text: "ingredient.cream"),
             .init(id: "sage", text: "ingredient.sage"),
             .init(id: "seasoning", text: "ingredient.seasoning")
-        ]
+        ],
+        steps: CookingStep.soup
     )
 }

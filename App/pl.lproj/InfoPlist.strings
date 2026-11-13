@@ -1,2 +1,3 @@
 "CFBundleDisplayName" = "Przepisy";
 "CFBundleName" = "Przepisy";
+"NSAlarmKitUsageDescription" = "Przepisy używają alarmów, żeby dać Ci znać, kiedy skończy się czas danego kroku.";

@@ -9,6 +9,7 @@ struct RecipeScreen: View {
     @State private var checkedIngredients: Set<Recipe.Ingredient.ID> = []
     @State private var selectedProvider: AIProvider = .openAI
     @State private var ingredientAccent = DishAccent.fallback
+    @State private var isCooking = false
     @ScaledMetric(relativeTo: .largeTitle) private var titleSize: CGFloat = 36
 
     private enum Sheet: String, Identifiable {
@@ -20,17 +21,27 @@ struct RecipeScreen: View {
 
     var body: some View {
         GeometryReader { geometry in
-            ViewThatFits(in: .vertical) {
-                recipeLayout
+            Group {
+                if isCooking {
+                    CookingScreen(
+                        recipe: recipe,
+                        onClose: { isCooking = false },
+                        onIngredients: { sheet = .ingredients }
+                    )
+                } else {
+                    ViewThatFits(in: .vertical) {
+                        recipeLayout
 
-                ScrollView {
-                    recipeLayout
-                        .frame(minHeight: geometry.size.height)
+                        ScrollView {
+                            recipeLayout.frame(minHeight: geometry.size.height)
+                        }
+                        .scrollBounceBehavior(.basedOnSize)
+                    }
+                    .background {
+                        backdrop.ignoresSafeArea()
+                    }
+                    .environment(\.colorScheme, .dark)
                 }
-                .scrollBounceBehavior(.basedOnSize)
-            }
-            .background {
-                backdrop.ignoresSafeArea()
             }
             .sheet(item: $sheet) { presented in
                 switch presented {
@@ -48,7 +59,7 @@ struct RecipeScreen: View {
                 }
             }
         }
-        .preferredColorScheme(.dark)
+        .preferredColorScheme(isCooking ? .light : .dark)
         .task(id: recipe.image) {
             await updateIngredientAccent()
         }
@@ -176,7 +187,9 @@ struct RecipeScreen: View {
                 }
                 .buttonStyle(RecipeButtonStyle())
 
-                Button(action: {}) {
+                Button {
+                    isCooking = true
+                } label: {
                     actionLabel("cooking.start", symbol: "frying.pan")
                         .background {
                             Capsule()
@@ -189,7 +202,7 @@ struct RecipeScreen: View {
                         }
                 }
                 .buttonStyle(RecipeButtonStyle())
-                .accessibilityHint(Text("cooking.preview.hint"))
+                .disabled(recipe.steps.isEmpty)
             }
         }
     }

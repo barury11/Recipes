@@ -1,2 +1,3 @@
 "CFBundleDisplayName" = "Recipes";
 "CFBundleName" = "Recipes";
+"NSAlarmKitUsageDescription" = "Recipes uses alarms to let you know when a cooking step’s timer ends.";

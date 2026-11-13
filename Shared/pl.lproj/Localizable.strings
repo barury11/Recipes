@@ -15,7 +15,6 @@
 "action.done" = "Gotowe";
 "ingredients.title" = "Składniki";
 "cooking.start" = "Zacznij gotować";
-"cooking.preview.hint" = "Kroki gotowania pojawią się w kolejnej wersji.";
 "settings.title" = "Ustawienia";
 "settings.ai" = "Sztuczna inteligencja";
 "settings.provider" = "Dostawca";
@@ -23,3 +22,27 @@
 "settings.endpoint" = "Adres API";
 "settings.key" = "Klucz API";
 "settings.preview" = "Ustawienia demonstracyjne. Klucz znika po zamknięciu tego ekranu.";
+
+"Step %lld" = "Krok %lld";
+"Step %lld of %lld" = "Krok %lld z %lld";
+"cooking.close" = "Wróć do przepisu";
+"cooking.previous" = "Poprzedni krok";
+"cooking.next" = "Następny krok";
+"timer.name" = "Minutnik gotowania";
+"timer.stop" = "Zatrzymaj minutnik";
+"timer.started" = "Minutnik uruchomiony";
+"timer.error.title" = "Nie udało się uruchomić minutnika";
+"timer.error.permission" = "Zezwól aplikacji Przepisy na alarmy w Ustawieniach i stuknij czas ponownie.";
+"timer.error.unavailable" = "Spróbuj ponownie. Jeśli otwarto Przepisy w Safari, minutnik można też uruchomić w aplikacji Przepisy.";
+"soup.step1.prepare" = "Obierz dynię i pokrój ją w kostkę. Posiekaj cebulę i drobno pokrój czosnek.";
+"soup.step1.sauté.before" = "Rozgrzej oliwę w dużym garnku na średnim ogniu. Dodaj cebulę i czosnek. Smaż przez ";
+"soup.step1.sauté.time" = "5 minut";
+"soup.step1.sauté.after" = ", mieszając, aż cebula zmięknie.";
+"soup.step2.stock" = "Dodaj dynię i bulion warzywny. Doprowadź zupę do wrzenia, a potem zmniejsz ogień.";
+"soup.step2.simmer.before" = "Gotuj na małym ogniu przez ";
+"soup.step2.simmer.time" = "20 minut";
+"soup.step2.simmer.after" = ", aż dynię będzie można łatwo nakłuć widelcem.";
+"soup.step3.blend.before" = "Wyłącz ogień, wlej śmietankę i miksuj blenderem ręcznym przez około ";
+"soup.step3.blend.time" = "45 sekund";
+"soup.step3.blend.after" = " lub do uzyskania gładkiego kremu.";
+"soup.step3.serve" = "Dopraw solą i czarnym pieprzem. Podawaj ze świeżą szałwią.";

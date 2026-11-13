@@ -15,7 +15,6 @@
 "action.done" = "Done";
 "ingredients.title" = "Ingredients";
 "cooking.start" = "Start Cooking";
-"cooking.preview.hint" = "Cooking steps will be available in a later version.";
 "settings.title" = "Settings";
 "settings.ai" = "Artificial Intelligence";
 "settings.provider" = "Provider";
@@ -23,3 +22,27 @@
 "settings.endpoint" = "API URL";
 "settings.key" = "API Key";
 "settings.preview" = "Demo settings. The key is discarded when you close this screen.";
+
+"Step %lld" = "Step %lld";
+"Step %lld of %lld" = "Step %lld of %lld";
+"cooking.close" = "Back to recipe";
+"cooking.previous" = "Previous step";
+"cooking.next" = "Next step";
+"timer.name" = "Cooking Timer";
+"timer.stop" = "Stop Timer";
+"timer.started" = "Timer started";
+"timer.error.title" = "Couldn’t start the timer";
+"timer.error.permission" = "Allow Recipes to use alarms in Settings, then tap the time again.";
+"timer.error.unavailable" = "Try again. If you opened Recipes from Safari, you can also start the timer in the Recipes app.";
+"soup.step1.prepare" = "Peel and cube the squash. Chop the onion and mince the garlic.";
+"soup.step1.sauté.before" = "Heat the olive oil in a large pot over medium heat. Add the onion and garlic and cook for ";
+"soup.step1.sauté.time" = "5 minutes";
+"soup.step1.sauté.after" = ", stirring until the onion softens.";
+"soup.step2.stock" = "Add the squash and vegetable stock. Bring the soup to a boil, then reduce the heat.";
+"soup.step2.simmer.before" = "Simmer for ";
+"soup.step2.simmer.time" = "20 minutes";
+"soup.step2.simmer.after" = ", until the squash is tender enough to pierce with a fork.";
+"soup.step3.blend.before" = "Turn off the heat, add the cream and blend with an immersion blender for about ";
+"soup.step3.blend.time" = "45 seconds";
+"soup.step3.blend.after" = " or until smooth.";
+"soup.step3.serve" = "Season with salt and black pepper. Serve with fresh sage leaves.";
