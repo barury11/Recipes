@@ -1,0 +1,58 @@
+name: Build Recipes IPA
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 20
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v5
+
+      - name: Build for iPhone
+        shell: bash
+        run: |
+          xcodebuild -version
+          xcodebuild \
+            -project Recipes.xcodeproj \
+            -scheme Recipes \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/recipes-build" \
+            CODE_SIGNING_ALLOWED=NO \
+            build
+
+      - name: Package and verify unsigned IPA
+        shell: bash
+        run: |
+          app="$RUNNER_TEMP/recipes-build/Build/Products/Release-iphoneos/Recipes.app"
+          extension="$app/PlugIns/RecipesShare.appex"
+          test -d "$extension"
+          for bundle in "$app" "$extension"; do
+            executable="$(/usr/libexec/PlistBuddy -c 'Print CFBundleExecutable' "$bundle/Info.plist")"
+            xcrun lipo -verify_arch arm64 "$bundle/$executable"
+            for language in en pl; do
+              test -f "$bundle/$language.lproj/InfoPlist.strings"
+              test -f "$bundle/$language.lproj/Localizable.strings"
+            done
+          done
+
+          staging="$(mktemp -d "$RUNNER_TEMP/recipes-package.XXXXXX")"
+          mkdir "$staging/Payload" dist
+          ditto "$app" "$staging/Payload/Recipes.app"
+          ditto -c -k --keepParent "$staging/Payload" dist/Recipes.ipa
+          unzip -tq dist/Recipes.ipa
+
+      - name: Upload Recipes.ipa
+        uses: actions/upload-artifact@v4
+        with:
+          name: Recipes-unsigned-ipa
+          path: dist/Recipes.ipa
+          if-no-files-found: error
