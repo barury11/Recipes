@@ -26,13 +26,13 @@ struct RecipePage {
     }
 
     var sourceURL: URL {
-        var parts = URLComponents(url: url, resolvingAgainstBaseURL: false)
-        parts?.fragment = nil
-        parts?.queryItems = parts?.queryItems?.filter {
+        guard var parts = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return url }
+        parts.fragment = nil
+        let query = parts.queryItems?.filter {
             !$0.name.lowercased().hasPrefix("utm_") && !["fbclid", "gclid"].contains($0.name.lowercased())
         }
-        if parts?.queryItems?.isEmpty == true { parts?.query = nil }
-        return parts?.url ?? url
+        parts.queryItems = query?.isEmpty == true ? nil : query
+        return parts.url ?? url
     }
 
     func metadata(from candidates: [String]) -> RecipeFields? {
