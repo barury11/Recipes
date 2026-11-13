@@ -23,9 +23,7 @@
 "settings.ai" = "Artificial Intelligence";
 "settings.provider" = "Provider";
 "settings.provider.custom" = "Custom API";
-"settings.endpoint" = "API URL";
 "settings.key" = "API Key";
-"settings.preview" = "Demo settings. The key is discarded when you close this screen.";
 
 "Step %lld" = "Step %lld";
 "Step %lld of %lld" = "Step %lld of %lld";
@@ -50,3 +48,31 @@
 "soup.step3.blend.time" = "45 seconds";
 "soup.step3.blend.after" = " or until smooth.";
 "soup.step3.serve" = "Season with salt and black pepper. Serve with fresh sage leaves.";
+
+"action.cancel" = "Cancel";
+"settings.provider.unavailable" = "Unavailable in this version.";
+"settings.model" = "Model";
+"settings.key.error" = "The key could not be saved in Keychain.";
+"settings.gemini.help" = "Save your API key from Google AI Studio. Recipes with complete structured data are imported locally. Otherwise, Recipes sends the extracted page text to Google Gemini.";
+"library.sample" = "Sample Recipe";
+"library.safari.hint" = "Open a recipe in Safari, tap Share, then choose Recipes.";
+"library.addLink" = "Import a Link";
+"library.link" = "Recipe website URL";
+"import.title" = "Import Recipe";
+"import.loading" = "Reading the recipe…";
+"import.failed" = "Import Couldn’t Finish";
+"import.retry" = "Try Again";
+"import.error.key" = "Add a Google Gemini API key in Settings, then try again.";
+"import.error.key.share" = "Add a Google Gemini API key in Settings here. This installation stores separate keys for Safari and the Recipes app.";
+"import.error.invalidKey" = "Check your Google Gemini API key and its permissions in Google AI Studio.";
+"import.error.quota" = "Google Gemini’s limit was reached. Try later or check the project quota and billing.";
+"import.error.noRecipe" = "No complete recipe was found on this page.";
+"import.error.response" = "The extracted recipe was incomplete or invalid.";
+"import.error.storage" = "Recipes couldn’t save the file. Check available storage and try again.";
+"import.error.service" = "Google Gemini couldn’t process the request. Check your connection and try again.";
+"import.error.page" = "Recipes couldn’t read the page. Open it fully in Safari and share it again.";
+"import.error.link" = "Enter a valid HTTP or HTTPS recipe URL.";
+"import.export" = "Save in Files";
+"import.export.done" = "The recipe is saved.";
+"import.export.help" = "Select On My iPhone → Recipes in Files. Open Recipes once if the folder is missing.";
+"import.preview" = "View Recipe";

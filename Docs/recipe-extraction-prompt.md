@@ -69,3 +69,16 @@ liczby porcji ani ogólnego czasu przepisu jako minutnika. Dla wszystkich
 pozostałych fragmentów użyj null. Użyj pustej tablicy steps, jeśli instrukcji
 nie ma w źródle.
 ```
+
+## Kontrakt działającego importu
+
+Gemini 3.5 Flash-Lite dostaje tekst strony i wybrane metadane. Prompt
+wykonywany przez aplikację jest w `Shared/RecipeImporter.swift`. Odpowiedź
+zawiera `found`, metadane, listę składników i listę instrukcji. Początkowa
+wersja zachowuje treść i język źródła, sprawdza, czy tytuł, składniki i
+instrukcje da się znaleźć w dostarczonych danych, i przelicza jednoznaczne
+czasy na `timerSeconds` lokalnie. Zakresy czasowe zostają tekstem.
+
+Dane Schema.org są używane w pierwszej kolejności. Gdy komplet składników i
+instrukcji jest już dostępny, import nie korzysta z API. Zdjęcie pochodzi z
+metadanych strony i jest pobierane poza modelem.

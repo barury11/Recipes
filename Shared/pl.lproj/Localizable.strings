@@ -23,9 +23,7 @@
 "settings.ai" = "Sztuczna inteligencja";
 "settings.provider" = "Dostawca";
 "settings.provider.custom" = "Własne API";
-"settings.endpoint" = "Adres API";
 "settings.key" = "Klucz API";
-"settings.preview" = "Ustawienia demonstracyjne. Klucz znika po zamknięciu tego ekranu.";
 
 "Step %lld" = "Krok %lld";
 "Step %lld of %lld" = "Krok %lld z %lld";
@@ -50,3 +48,31 @@
 "soup.step3.blend.time" = "45 sekund";
 "soup.step3.blend.after" = " lub do uzyskania gładkiego kremu.";
 "soup.step3.serve" = "Dopraw solą i czarnym pieprzem. Podawaj ze świeżą szałwią.";
+
+"action.cancel" = "Anuluj";
+"settings.provider.unavailable" = "Niedostępne w tej wersji.";
+"settings.model" = "Model";
+"settings.key.error" = "Nie udało się zapisać klucza w Pęku kluczy.";
+"settings.gemini.help" = "Zapisz klucz API z Google AI Studio. Kompletne dane przepisu aplikacja importuje lokalnie. Jeśli ich brakuje, wysyła odczytany tekst strony do Google Gemini.";
+"library.sample" = "Przykładowy przepis";
+"library.safari.hint" = "Otwórz przepis w Safari, stuknij Udostępnij i wybierz Przepisy.";
+"library.addLink" = "Importuj z linku";
+"library.link" = "Adres strony z przepisem";
+"import.title" = "Import przepisu";
+"import.loading" = "Odczytuję przepis…";
+"import.failed" = "Import się nie powiódł";
+"import.retry" = "Spróbuj ponownie";
+"import.error.key" = "Dodaj klucz API Google Gemini w Ustawieniach i spróbuj ponownie.";
+"import.error.key.share" = "Dodaj klucz API Google Gemini w Ustawieniach tutaj. W tej instalacji Safari i aplikacja Przepisy zapisują klucze osobno.";
+"import.error.invalidKey" = "Sprawdź klucz API Google Gemini i jego uprawnienia w Google AI Studio.";
+"import.error.quota" = "Osiągnięto limit Google Gemini. Spróbuj później lub sprawdź limit i rozliczenia projektu.";
+"import.error.noRecipe" = "Na tej stronie nie znaleziono kompletnego przepisu.";
+"import.error.response" = "Odczytany przepis był niepełny lub nieprawidłowy.";
+"import.error.storage" = "Nie udało się zapisać pliku. Sprawdź wolne miejsce i spróbuj ponownie.";
+"import.error.service" = "Google Gemini nie mógł przetworzyć żądania. Sprawdź połączenie i spróbuj ponownie.";
+"import.error.page" = "Nie udało się odczytać strony. Otwórz ją w Safari, poczekaj na załadowanie i udostępnij ponownie.";
+"import.error.link" = "Podaj prawidłowy adres HTTP lub HTTPS strony z przepisem.";
+"import.export" = "Zapisz w Plikach";
+"import.export.done" = "Przepis został zapisany.";
+"import.export.help" = "W Plikach wybierz Na moim iPhonie → Przepisy. Jeśli folderu nie ma, otwórz raz aplikację Przepisy.";
+"import.preview" = "Wyświetl przepis";

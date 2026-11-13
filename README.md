@@ -7,9 +7,12 @@ Prototyp dla iPhone’a z iOS 26 lub nowszym. Otwórz `Recipes.xcodeproj` w Xcod
 - **Zacznij gotować** otwiera jeden krok naraz. Strzałki przełączają kroki, a przycisk checklisty otwiera te same Składniki co ekran przepisu.
 - Stuknij wyróżniony czas w tekście, by uruchomić minutnik Recipes przez systemowe AlarmKit. Przy pierwszym użyciu iOS może poprosić o zgodę na alarmy. Rozszerzenie Live Activities wyświetla odliczanie na ekranie blokady i w Dynamic Island.
 - W **Ustawieniach** można zapisać wybór **Klasyczny** lub **Inteligentny**. Prototyp wyświetla wygląd klasyczny.
-- W **Ustawieniach** można wybrać dostawcę AI i wpisać klucz w pole maskowane. Po zamknięciu arkusza klucz i ewentualny adres własnego API są usuwane.
-- Rozszerzenie pokazuje ten sam przykładowy przepis po wybraniu **Safari → Udostępnij → Przepisy / Recipes**. Jeśli skrót jest ukryty, przejdź do **Więcej** na liście aplikacji. **X** w rozszerzeniu wraca do Safari, a w aplikacji zamyka widok przepisu.
-- Prototyp korzysta z przykładowego przepisu. [Prompt do ekstrakcji](Docs/recipe-extraction-prompt.md) definiuje dzielenie instrukcji na kroki i oznaczanie czasów na potrzeby przyszłego importu z AI.
+- W **Ustawienia → Dostawca → Google Gemini** zapisz klucz API z [Google AI Studio](https://aistudio.google.com/api-keys). Pozostali dostawcy są nieaktywni.
+- Otwórz stronę z przepisem w Safari. Użyj **Udostępnij → Przepisy**. Jeśli skrót jest ukryty, przejdź do **Więcej**. Można też wkleić adres w aplikacji przez **+**.
+- Kompletne dane Schema.org importujemy lokalnie. Dla stron bez kompletu danych wysyłamy krótki tekst i metadane do Gemini 3.5 Flash-Lite, sprawdzamy odpowiedź i wyliczamy klikalne czasy z instrukcji. Treść przepisu zachowuje język źródła.
+- Przepisy zapisują się jako JSON ze zdjęciem do **Pliki → Na moim iPhonie → Przepisy**. Jeśli podpis obsługuje współdzieloną grupę, otwórz aplikację po imporcie z Safari, aby przenieść je ze współdzielonej skrzynki do Plików. Bez grupy rozszerzenie wyświetli przycisk **Zapisz w Plikach**. Zapisz klucz Gemini w rozszerzeniu, jeśli zostaniesz o niego poproszony.
+
+Jeśli podpisujesz projekt w Xcode z App Groups, przypisz tę samą grupę do aplikacji i rozszerzenia Safari oraz dopasuj identyfikator w `RecipeFiles.group` do grupy w plikach uprawnień. Konfiguracja z podpisem bez współdzielonej grupy obsługuje ręczny zapis z Safari.
 
 ## GitHub Actions
 

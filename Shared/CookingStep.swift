@@ -1,7 +1,7 @@
 import Foundation
 
-struct CookingStep: Decodable {
-    struct Segment: Decodable {
+struct CookingStep: Codable {
+    struct Segment: Codable {
         let text: String
         let timerSeconds: Int?
 

@@ -63,11 +63,10 @@ private enum RecipeAppearance: String {
 }
 
 struct RecipeSettingsSheet: View {
-    @Binding var provider: AIProvider
     @AppStorage("recipeAppearance") private var appearance: RecipeAppearance = .classic
     @Environment(\.dismiss) private var dismiss
-    @State private var apiKey = ""
-    @State private var endpoint = ""
+    @State private var apiKey = GeminiKey.load() ?? ""
+    @State private var keyError: LocalizedStringKey?
 
     var body: some View {
         NavigationStack {
@@ -81,40 +80,54 @@ struct RecipeSettingsSheet: View {
                 } header: {
                     Text("settings.appearance")
                 } footer: {
-                    if appearance == .smart {
-                        Text("settings.appearance.smart.preview")
+                    if appearance == .smart { Text("settings.appearance.smart.preview") }
+                }
+
+                Section("settings.provider") {
+                    Label("Google Gemini", systemImage: "checkmark.circle.fill")
+                        .foregroundStyle(.primary)
+                    ForEach([AIProvider.openAI, .anthropic, .custom]) { provider in
+                        Text(LocalizedStringKey(provider.rawValue))
+                            .foregroundStyle(.tertiary)
+                            .accessibilityHint(Text("settings.provider.unavailable"))
                     }
                 }
 
                 Section {
-                    Picker("settings.provider", selection: $provider) {
-                        ForEach(AIProvider.allCases) { option in
-                            Text(LocalizedStringKey(option.rawValue)).tag(option)
-                        }
-                    }
-
-                    if provider == .custom {
-                        TextField("settings.endpoint", text: $endpoint)
-                            .keyboardType(.URL)
-                            .textInputAutocapitalization(.never)
-                            .autocorrectionDisabled()
-                    }
-
                     SecureField("settings.key", text: $apiKey)
                         .textInputAutocapitalization(.never)
                         .autocorrectionDisabled()
-                } header: {
-                    Text("settings.ai")
+                    LabeledContent("settings.model") { Text("Gemini 3.5 Flash-Lite") }
                 } footer: {
-                    Text("settings.preview")
+                    Text("settings.gemini.help")
                 }
             }
             .navigationTitle("settings.title")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("action.done") { dismiss() }
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("action.cancel") { dismiss() }
                 }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("action.done") {
+                        do {
+                            try GeminiKey.save(apiKey)
+                            dismiss()
+                        } catch GeminiKey.Failure.invalid {
+                            keyError = "import.error.invalidKey"
+                        } catch {
+                            keyError = "settings.key.error"
+                        }
+                    }
+                }
+            }
+            .alert("import.failed", isPresented: Binding(
+                get: { keyError != nil },
+                set: { if !$0 { keyError = nil } }
+            )) {
+                Button("action.done", role: .cancel) {}
+            } message: {
+                if let keyError { Text(keyError) }
             }
         }
     }

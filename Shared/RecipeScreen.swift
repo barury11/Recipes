@@ -7,7 +7,6 @@ struct RecipeScreen: View {
 
     @State private var sheet: Sheet?
     @State private var checkedIngredients: Set<Recipe.Ingredient.ID> = []
-    @State private var selectedProvider: AIProvider = .openAI
     @State private var ingredientAccent = DishAccent.fallback
     @State private var isCooking = false
     @ScaledMetric(relativeTo: .largeTitle) private var titleSize: CGFloat = 36
@@ -50,14 +49,14 @@ struct RecipeScreen: View {
                         .presentationDetents([.large])
                         .presentationBackground(Color(uiColor: .systemGroupedBackground))
                 case .settings:
-                    RecipeSettingsSheet(provider: $selectedProvider)
+                    RecipeSettingsSheet()
                         .presentationDetents([.large])
                         .presentationDragIndicator(.visible)
                 }
             }
         }
         .preferredColorScheme(isCooking ? .light : .dark)
-        .task(id: recipe.image) {
+        .task {
             await updateIngredientAccent()
         }
     }
@@ -76,7 +75,7 @@ struct RecipeScreen: View {
 
     private func updateIngredientAccent() async {
         ingredientAccent = .fallback
-        guard let image = UIImage(named: recipe.image)?.cgImage else { return }
+        guard let image = recipe.picture?.cgImage else { return }
         let analysis = Task.detached(priority: .utility) {
             DishAccent.extract(from: image)
         }
@@ -97,12 +96,14 @@ struct RecipeScreen: View {
             ZStack(alignment: .top) {
                 Color.black
 
-                Image(recipe.image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: geometry.size.width, height: photoHeight, alignment: .top)
-                    .clipped()
-                    .accessibilityHidden(true)
+                if let picture = recipe.picture {
+                    Image(uiImage: picture)
+                        .resizable()
+                        .scaledToFill()
+                        .frame(width: geometry.size.width, height: photoHeight, alignment: .top)
+                        .clipped()
+                        .accessibilityHidden(true)
+                }
 
                 LinearGradient(
                     stops: [
@@ -142,18 +143,17 @@ struct RecipeScreen: View {
 
                 ViewThatFits(in: .horizontal) {
                     HStack(spacing: 7) {
-                        Text(recipe.category)
-                        Text("·").accessibilityHidden(true)
-                        Text(recipe.time)
-                        Text("·").accessibilityHidden(true)
-                        Text(recipe.servings)
+                        ForEach(recipe.metadata.indices, id: \.self) { index in
+                            if index > 0 { Text("·").accessibilityHidden(true) }
+                            Text(recipe.metadata[index])
+                        }
                     }
                     .fixedSize(horizontal: true, vertical: false)
 
                     VStack(alignment: .leading, spacing: 4) {
-                        Text(recipe.category)
-                        Text(recipe.time)
-                        Text(recipe.servings)
+                        ForEach(recipe.metadata.indices, id: \.self) { index in
+                            Text(recipe.metadata[index])
+                        }
                     }
                 }
                 .font(.subheadline.weight(.medium))
