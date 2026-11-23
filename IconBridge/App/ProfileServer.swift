@@ -96,7 +96,8 @@ import UIKit
     }
     func stop() {
         pending?.resume(throwing: BridgeError.invalid("Pobieranie wygasło. Wróć do aplikacji i spróbuj ponownie.")); pending = nil
-        let old = listener; listener = nil; old?.cancel()
+        let old = listener; listener = nil
+        old?.stateUpdateHandler = nil; old?.newConnectionHandler = nil; old?.cancel()
         for connection in connections.values { connection.cancel() }; connections.removeAll()
         expiration?.invalidate(); expiration = nil; active = false
         if background != .invalid { UIApplication.shared.endBackgroundTask(background); background = .invalid }

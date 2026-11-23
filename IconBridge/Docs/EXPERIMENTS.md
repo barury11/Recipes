@@ -23,3 +23,7 @@ Nie opisujemy analizy dokumentacji jako wykonanej próby na telefonie. Kolejne r
 - [Własna ikona skrótu na ekranie](https://support.apple.com/guide/shortcuts/apd735880972/ios)
 - [Uruchamianie skrótu przez URL](https://support.apple.com/guide/shortcuts/apd624386f42/ios)
 - [Podpisywanie skrótów oficjalnym CLI](https://support.apple.com/guide/shortcuts-mac/apd455c82f02/mac)
+
+## Rzeczywiste próby CI
+
+- Pierwszy run `45218280111`: GitHub utrzymywał job `macos-26` w kolejce, bez runnera i bez wykonania kroków. Nie jest to błąd kompilacji. Drugie podejście używa `macos-15`, zgodnego z projektem iOS 17+. Poprzedni run zostaje anulowany przez grupę concurrency po wypchnięciu poprawki.
