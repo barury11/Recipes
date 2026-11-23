@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>CFBundleDevelopmentRegion</key><string>pl</string>
+<key>CFBundleDisplayName</key><string>IconBridge</string>
+<key>CFBundleExecutable</key><string>$(EXECUTABLE_NAME)</string>
+<key>CFBundleIdentifier</key><string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+<key>CFBundleInfoDictionaryVersion</key><string>6.0</string>
+<key>CFBundleName</key><string>$(PRODUCT_NAME)</string>
+<key>CFBundlePackageType</key><string>APPL</string>
+<key>CFBundleShortVersionString</key><string>$(MARKETING_VERSION)</string>
+<key>CFBundleVersion</key><string>$(CURRENT_PROJECT_VERSION)</string>
+<key>LSRequiresIPhoneOS</key><true/>
+<key>UILaunchScreen</key><dict/>
+<key>UIApplicationSupportsIndirectInputEvents</key><true/>
+<key>UISupportedInterfaceOrientations</key><array><string>UIInterfaceOrientationPortrait</string></array>
+<key>UISupportedInterfaceOrientations~ipad</key><array><string>UIInterfaceOrientationPortrait</string><string>UIInterfaceOrientationLandscapeLeft</string><string>UIInterfaceOrientationLandscapeRight</string><string>UIInterfaceOrientationPortraitUpsideDown</string></array>
+<key>UIRequiresFullScreen</key><true/>
+<key>NSAppTransportSecurity</key><dict><key>NSAllowsLocalNetworking</key><true/></dict>
+<key>NSPhotoLibraryAddUsageDescription</key><string>Zapisz wybraną ikonę w Zdjęciach, aby dodać ją do ekranu początkowego.</string>
+<key>CFBundleURLTypes</key><array><dict><key>CFBundleURLName</key><string>com.barury11.iconbridge</string><key>CFBundleURLSchemes</key><array><string>iconbridge</string></array></dict></array>
+<key>UIFileSharingEnabled</key><true/>
+<key>LSSupportsOpeningDocumentsInPlace</key><true/>
+<key>CFBundleDocumentTypes</key><array><dict><key>CFBundleTypeName</key><string>Paczka ikon IconBridge</string><key>LSHandlerRank</key><string>Owner</string><key>LSItemContentTypes</key><array><string>com.barury11.iconbridge.iconpack</string></array></dict></array>
+<key>UTExportedTypeDeclarations</key><array><dict><key>UTTypeIdentifier</key><string>com.barury11.iconbridge.iconpack</string><key>UTTypeDescription</key><string>Paczka ikon IconBridge</string><key>UTTypeConformsTo</key><array><string>public.json</string></array><key>UTTypeTagSpecification</key><dict><key>public.filename-extension</key><array><string>iconpack</string></array><key>public.mime-type</key><string>application/vnd.iconbridge.pack+json</string></dict></dict></array>
+</dict></plist>
