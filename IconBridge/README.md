@@ -37,7 +37,7 @@ Katalog zawiera 24 launchery, każdy z jedną czynnością „Otwórz aplikację
 
 ## Budowanie i testowanie
 
-Otwórz `IconBridge.xcodeproj` w Xcode. Przed budowaniem dystrybucji na Macu uruchom `python3 Tools/sign_shortcuts.py`; spowoduje wysłanie stałych, niespersonalizowanych definicji skrótów do Apple w celu ich podpisania. Lokalne buildy bez tego kroku mają jawny komunikat o brakujących skrótach. Przy buildzie CI niepodpisane skróty są błędem blokującym wydanie.
+Otwórz `IconBridge.xcodeproj` w Xcode. Przed budowaniem dystrybucji na Macu uruchom `python3 Tools/sign_shortcuts.py`; spróbuje użyć CLI Apple. Bez zalogowanego iCloud wyśle wyłącznie stałe, niespersonalizowane definicje skrótów do publicznego API `https://sign.shortcuty.app/api/v1/sign`. Nie wysyła ikon ani paczek użytkownika. Zależność dotyczy budowania, a aplikacja używa dołączonych plików offline. Lokalne buildy bez tego kroku mają jawny komunikat o brakujących skrótach. Przy buildzie CI niepodpisane skróty są błędem blokującym wydanie.
 
 - `python3 Tools/generate_project.py` odtwarza projekt Xcode i ikonę aplikacji bez zależności.
 - `python3 Tools/generate_shortcuts.py` odtwarza deterministyczne źródła `.shortcut`.
@@ -46,3 +46,5 @@ Otwórz `IconBridge.xcodeproj` w Xcode. Przed budowaniem dystrybucji na Macu uru
 - Actions buduje IPA dla arm64, sprawdza ZIP, bundle ID, brak podpisu aplikacji oraz 25 podpisanych skrótów, a także buduje i uruchamia aplikację w symulatorze iPhone'a.
 
 Podpisanie skrótu nie jest testem jego uruchomienia na iOS. Testy rdzenia i uruchomienie w symulatorze nie zastępują testu na fizycznym iPhonie. Lista sprawdzeń: [Docs/DEVICE-TESTS.md](Docs/DEVICE-TESTS.md). Historia prób i odrzuconych metod: [Docs/EXPERIMENTS.md](Docs/EXPERIMENTS.md).
+
+Publiczny signer: [dokumentacja Shortcuty V1](https://github.com/Shortcuty/Signing-Server-API-Documentation). CI sprawdza sumy wejścia/wyjścia, podpis AEA narzędziem `aea` i zgodność rozpakowanego workflow ze źródłem. Ostateczną walidację zaufania certyfikatu i importu wykonuje iOS.

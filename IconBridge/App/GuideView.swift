@@ -49,7 +49,7 @@ struct SettingsView: View {
                 Text("Pliki .iconpack zawierają obrazy i adresy przypisanych skrótów. Udostępniaj je świadomie. Import paczki dodaje nową kopię i nie uruchamia jej adresów.")
             }
             Section("Wersja 0.1.0") {
-                Text("Wymaga iOS 17 lub nowszego. IPA jest niepodpisane; instalator musi je podpisać. Same pliki .shortcut są podpisywane oddzielnie narzędziem Apple na GitHub Actions.")
+                Text("Wymaga iOS 17 lub nowszego. IPA jest niepodpisane; instalator musi je podpisać. Pliki .shortcut są podpisywane i weryfikowane osobno podczas budowania. Bez iCloud build używa publicznego API Shortcuty wyłącznie dla stałych szablonów.")
                 Link("Kod, instrukcje i wydania", destination: URL(string: "https://github.com/barury11/Recipes/tree/iconbridge/IconBridge")!)
             }
         }.navigationTitle("Skróty i informacje")
