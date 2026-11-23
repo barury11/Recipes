@@ -47,4 +47,4 @@ Otwórz `IconBridge.xcodeproj` w Xcode. Przed budowaniem dystrybucji na Macu uru
 
 Podpisanie skrótu nie jest testem jego uruchomienia na iOS. Testy rdzenia i uruchomienie w symulatorze nie zastępują testu na fizycznym iPhonie. Lista sprawdzeń: [Docs/DEVICE-TESTS.md](Docs/DEVICE-TESTS.md). Historia prób i odrzuconych metod: [Docs/EXPERIMENTS.md](Docs/EXPERIMENTS.md).
 
-Publiczny signer: [dokumentacja Shortcuty V1](https://github.com/Shortcuty/Signing-Server-API-Documentation). CI sprawdza sumy wejścia/wyjścia, podpis AEA narzędziem `aea` i zgodność rozpakowanego workflow ze źródłem. Ostateczną walidację zaufania certyfikatu i importu wykonuje iOS.
+Publiczny signer: [dokumentacja Shortcuty V1](https://github.com/Shortcuty/Signing-Server-API-Documentation). CI sprawdza sumy wejścia/wyjścia, podpis AEA narzędziem `aea` i zgodność czynności i konfiguracji wejścia rozpakowanego workflow ze źródłem. Ostateczną walidację zaufania certyfikatu i importu wykonuje iOS.

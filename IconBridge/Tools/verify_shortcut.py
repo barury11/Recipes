@@ -14,6 +14,16 @@ def _tlv(data,offset):
     if start+size>len(data):raise ValueError('Truncated DER')
     return tag,data[start:start+size],start+size
 
+def compare_workflows(expected,actual):
+    # A shortcut's import name comes from its download filename. Apple normalizes
+    # source-only name/client metadata while signing. Actions and permissions must
+    # remain byte-for-byte equivalent after plist decoding.
+    if actual.get('WFWorkflowActions')!=expected['WFWorkflowActions']:
+        raise ValueError('Signed workflow changed actions or their parameters')
+    for key in ('WFWorkflowImportQuestions','WFWorkflowTypes','WFWorkflowInputContentItemClasses','WFWorkflowOutputContentItemClasses'):
+        if actual.get(key,[])!=expected.get(key,[]):
+            raise ValueError(f'Signed workflow changed input/import configuration: {key}')
+
 def verify(source,output):
     blob=output.read_bytes()
     if blob[:4]!=b'AEA1' or len(blob)>2*1024*1024:raise ValueError('Expected a signed AEA1 container under 2 MB')
@@ -38,7 +48,7 @@ def verify(source,output):
         workflows=list(extracted.glob('*.wflow'))
         if len(workflows)!=1:raise ValueError('Expected exactly one workflow in signed archive')
         actual=plistlib.loads(workflows[0].read_bytes());expected=plistlib.loads(source.read_bytes())
-        # Apple may add signing/import metadata, but must preserve all source fields and every action exactly.
-        for key,value in expected.items():
-            if actual.get(key)!=value:raise ValueError(f'Signed workflow changed source field: {key}')
+        compare_workflows(expected,actual)
+        if actual.get('WFWorkflowName')!=expected.get('WFWorkflowName'):
+            print('Signer normalized name metadata; preserving import filename:',output.name,flush=True)
     return True

@@ -45,7 +45,7 @@ def sign():
         report.append({'file':output.name,'bytes':output.stat().st_size,'signed':True,'backend':backend,
                        'source_sha256':hashlib.sha256(source.read_bytes()).hexdigest(),
                        'signed_sha256':hashlib.sha256(output.read_bytes()).hexdigest(),
-                       'aea_signature_verified':True,'workflow_matches_source':True})
+                       'aea_signature_verified':True,'workflow_actions_and_inputs_match_source':True})
         print('Signed and verified:',source.name,flush=True)
     (ROOT/'Shortcuts/signing-report.json').write_text(json.dumps(report,indent=2)+'\n')
 if __name__=='__main__':sign()

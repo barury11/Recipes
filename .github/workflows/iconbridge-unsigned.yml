@@ -21,7 +21,6 @@ jobs:
           python3 IconBridge/Tools/validate.py
           swift test --package-path IconBridge
       - name: Sign and verify static Shortcut templates
-        continue-on-error: true
         run: python3 IconBridge/Tools/sign_shortcuts.py
       - name: Build unsigned iPhone app
         run: |

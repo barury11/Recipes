@@ -12,6 +12,19 @@ class SourceTests(unittest.TestCase):
                 generate_shortcuts.ROOT=fresh;generate_shortcuts.generate()
                 self.assertEqual(len(list((fresh/'Shortcuts/Unsigned').glob('*.shortcut'))),25)
         finally:generate_shortcuts.ROOT=original
+    def test_signer_may_normalize_display_metadata(self):
+        from verify_shortcut import compare_workflows
+        expected={'WFWorkflowName':'A','WFWorkflowActions':[{'x':1}], 'WFWorkflowTypes':[]}
+        compare_workflows(expected,{'WFWorkflowActions':[{'x':1}],'WFWorkflowClientVersion':'new'})
+    def test_signer_must_preserve_actions(self):
+        from verify_shortcut import compare_workflows
+        expected={'WFWorkflowActions':[{'WFWorkflowActionIdentifier':'is.workflow.actions.openapp','WFWorkflowActionParameters':{'WFAppIdentifier':'com.apple.camera'}}]}
+        for actual in [{'WFWorkflowActions':[]},{'WFWorkflowActions':[{'WFWorkflowActionIdentifier':'is.workflow.actions.openurl'}]}]:
+            with self.assertRaises(ValueError):compare_workflows(expected,actual)
+    def test_signer_must_preserve_input_configuration(self):
+        from verify_shortcut import compare_workflows
+        with self.assertRaises(ValueError):
+            compare_workflows({'WFWorkflowActions':[],'WFWorkflowTypes':[]},{'WFWorkflowActions':[],'WFWorkflowTypes':['ActionExtension']})
     def test_catalog(self):
         catalog=json.loads((ROOT/'Resources/catalog.json').read_text())
         self.assertEqual(len(catalog),24)
