@@ -14,7 +14,7 @@ def workflow(name,actions):
         'WFWorkflowInputContentItemClasses':[],
         'WFWorkflowIcon':{'WFWorkflowIconGlyphNumber':59511,'WFWorkflowIconStartColor':2071128575}}
 def generate():
-    dest=ROOT/'Shortcuts/Unsigned';dest.mkdir(exist_ok=True)
+    dest=ROOT/'Shortcuts/Unsigned';dest.mkdir(parents=True,exist_ok=True)
     specs=[]
     for app in json.loads((ROOT/'Resources/catalog.json').read_text()):
         name='IconBridge - '+app['name']

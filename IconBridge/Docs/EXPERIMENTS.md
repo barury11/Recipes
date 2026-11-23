@@ -27,3 +27,5 @@ Nie opisujemy analizy dokumentacji jako wykonanej próby na telefonie. Kolejne r
 ## Rzeczywiste próby CI
 
 - Pierwszy run `45218280111`: GitHub utrzymywał job `macos-26` w kolejce, bez runnera i bez wykonania kroków. Nie jest to błąd kompilacji. Drugie podejście używa `macos-15`, zgodnego z projektem iOS 17+. Poprzedni run zostaje anulowany przez grupę concurrency po wypchnięciu poprawki.
+
+- Run `45219117021`: runner macOS 15 wystartował. Generator zakończył się `FileNotFoundError`, ponieważ Git nie zapisuje pustego katalogu `Shortcuts`, a `mkdir` nie tworzył rodziców. Poprawka: `parents=True` dla katalogów źródeł i podpisanych plików. Dodany test generatora w zupełnie pustym drzewie z samym katalogiem aplikacji. Dalsze kroki nie uruchomiły się w tej próbie.

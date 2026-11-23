@@ -4,7 +4,7 @@ import pathlib,subprocess,sys,json,time
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 def sign():
     subprocess.run([sys.executable,str(ROOT/'Tools/generate_shortcuts.py')],check=True)
-    dest=ROOT/'Resources/Launchers';dest.mkdir(exist_ok=True)
+    dest=ROOT/'Resources/Launchers';dest.mkdir(parents=True,exist_ok=True)
     report=[]
     for source in sorted((ROOT/'Shortcuts/Unsigned').glob('*.shortcut')):
         output=dest/source.name

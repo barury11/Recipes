@@ -2,6 +2,16 @@
 import hashlib,json,pathlib,plistlib,sys,unittest,zipfile
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 class SourceTests(unittest.TestCase):
+    def test_generator_in_empty_checkout(self):
+        import tempfile,generate_shortcuts
+        original=generate_shortcuts.ROOT
+        try:
+            with tempfile.TemporaryDirectory() as temp:
+                fresh=pathlib.Path(temp); (fresh/'Resources').mkdir()
+                (fresh/'Resources/catalog.json').write_bytes((ROOT/'Resources/catalog.json').read_bytes())
+                generate_shortcuts.ROOT=fresh;generate_shortcuts.generate()
+                self.assertEqual(len(list((fresh/'Shortcuts/Unsigned').glob('*.shortcut'))),25)
+        finally:generate_shortcuts.ROOT=original
     def test_catalog(self):
         catalog=json.loads((ROOT/'Resources/catalog.json').read_text())
         self.assertEqual(len(catalog),24)
