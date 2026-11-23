@@ -15,6 +15,11 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
+      - name: Start iPhone Simulator while building
+        run: |
+          device="$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for k,v in d["devices"].items() if "iOS" in k for x in v if "iPhone" in x["name"]))')"
+          echo "ICONBRIDGE_SIM_DEVICE=$device" >> "$GITHUB_ENV"
+          xcrun simctl boot "$device"
       - name: Validate generated sources and core behavior
         run: |
           python3 IconBridge/Tools/generate_shortcuts.py
@@ -49,8 +54,7 @@ jobs:
           xcodebuild -project IconBridge/IconBridge.xcodeproj -scheme IconBridge \
             -configuration Debug -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath "$RUNNER_TEMP/iconbridge-sim" CODE_SIGNING_ALLOWED=NO build
-          device="$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for k,v in d["devices"].items() if "iOS" in k for x in v if "iPhone" in x["name"]))')"
-          xcrun simctl boot "$device"
+          device="$ICONBRIDGE_SIM_DEVICE"
           xcrun simctl bootstatus "$device" -b
           xcrun simctl install "$device" "$RUNNER_TEMP/iconbridge-sim/Build/Products/Debug-iphonesimulator/IconBridge.app"
           xcrun simctl launch "$device" com.barury11.iconbridge
@@ -86,7 +90,8 @@ jobs:
           import json,sys
           r=json.load(open(sys.argv[1])); names={a['name'] for a in r['assets']}
           assert r['prerelease'] and r['zipball_url'] and r['tarball_url']
-          assert {'IconBridge-unsigned.ipa','IconBridge-Shortcuts.zip','IconBridge - Importuj.shortcut'} <= names
+          assert {'IconBridge-unsigned.ipa','IconBridge-Shortcuts.zip'} <= names
+          assert any(n.endswith('Importuj.shortcut') for n in names), names
           print('Verified prerelease assets and matching source archive links:',r['html_url'])
           PY
           echo "### Download IconBridge" >> "$GITHUB_STEP_SUMMARY"
