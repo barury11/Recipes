@@ -1,6 +1,11 @@
 name: Build IconBridge unsigned IPA
 on:
   workflow_dispatch:
+    inputs:
+      simulator_check:
+        description: 'Dodatkowo zbuduj i uruchom aplikację w symulatorze'
+        type: boolean
+        default: false
   push:
     branches: [iconbridge]
     paths: ['IconBridge/**', '.github/workflows/iconbridge-unsigned.yml']
@@ -15,11 +20,6 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
-      - name: Start iPhone Simulator while building
-        run: |
-          device="$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for k,v in d["devices"].items() if "iOS" in k for x in v if "iPhone" in x["name"]))')"
-          echo "ICONBRIDGE_SIM_DEVICE=$device" >> "$GITHUB_ENV"
-          xcrun simctl boot "$device"
       - name: Validate generated sources and core behavior
         run: |
           python3 IconBridge/Tools/generate_shortcuts.py
@@ -50,11 +50,14 @@ jobs:
           cp IconBridge/Shortcuts/signing-report.json dist/
           shasum -a 256 dist/* > dist/SHA256SUMS.txt
       - name: Build and launch in iPhone Simulator
+        if: github.event_name == 'workflow_dispatch' && inputs.simulator_check
+        timeout-minutes: 12
         run: |
           xcodebuild -project IconBridge/IconBridge.xcodeproj -scheme IconBridge \
             -configuration Debug -destination 'generic/platform=iOS Simulator' \
             -derivedDataPath "$RUNNER_TEMP/iconbridge-sim" CODE_SIGNING_ALLOWED=NO build
-          device="$ICONBRIDGE_SIM_DEVICE"
+          device="$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for k,v in d["devices"].items() if "iOS" in k for x in v if "iPhone" in x["name"]))')"
+          xcrun simctl boot "$device"
           xcrun simctl bootstatus "$device" -b
           xcrun simctl install "$device" "$RUNNER_TEMP/iconbridge-sim/Build/Products/Debug-iphonesimulator/IconBridge.app"
           xcrun simctl launch "$device" com.barury11.iconbridge
@@ -80,7 +83,7 @@ jobs:
           - Instrukcja i dziennik metod: `IconBridge/README.md`, `IconBridge/Docs/EXPERIMENTS.md` w źródłach tego wydania.
           - Standardowa metoda Apple wymaga wybrania obrazu przy dodaniu skrótu do ekranu. Masowy profil Web Clip jest eksperymentalny i wymaga zatwierdzenia w Ustawieniach. Podmiana pozycji oryginalnych ikon jest ręczna.
 
-          Build urządzenia, testy rdzenia i uruchomienie w symulatorze wykonano w Actions. Zachowanie Web Clip oraz otwieranie aplikacji z ikon należy sprawdzić na fizycznym iPhonie.
+          Build urządzenia i testy rdzenia wykonano w Actions. Test uruchomienia tej wersji aplikacji w symulatorze zaliczono w buildzie 7; można go ponowić przez Run workflow → simulator_check. Zachowanie Web Clip oraz otwieranie aplikacji z ikon należy sprawdzić na fizycznym iPhonie.
           NOTES
           gh release create "$tag" dist/* --repo "$GITHUB_REPOSITORY" \
             --target "$GITHUB_SHA" --title "IconBridge 0.1.0 · build ${GITHUB_RUN_NUMBER}" \
