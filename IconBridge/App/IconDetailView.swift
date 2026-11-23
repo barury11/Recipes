@@ -21,7 +21,7 @@ struct IconDetailView: View {
                     TextField("Nazwa pod ikoną", text: $name).onSubmit(save)
                     Button("Zapisz nazwę i przypisanie", action: save).fontWeight(.semibold)
                 }
-                Section("Otwieranie") {
+                Section {
                     Picker("Typ", selection: $kind) {
                         Text("Skrót").tag(LaunchKind.shortcut); Text("Adres aplikacji").tag(LaunchKind.url)
                     }.pickerStyle(.segmented)
@@ -37,7 +37,7 @@ struct IconDetailView: View {
                         } catch { store.problem = error.localizedDescription }
                     }
                     if let testStatus { Text(testStatus).font(.footnote).foregroundStyle(.secondary) }
-                } footer: {
+                } header: { Text("Otwieranie") } footer: {
                     Text(kind == .shortcut ? "Skrót musi być już dodany do aplikacji Skróty. Gotowy wybierz poniżej. Dla dowolnej innej aplikacji utwórz skrót z jedną czynnością „Otwórz aplikację” i wpisz jego nazwę." : "Użyj adresu udokumentowanego przez twórcę aplikacji. Bez adresu wybierz typ Skrót. iOS może wyświetlić potwierdzenie lub otworzyć Safari.")
                 }
                 if let matched {

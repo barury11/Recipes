@@ -34,3 +34,5 @@ Nie opisujemy analizy dokumentacji jako wykonanej próby na telefonie. Kolejne r
 
 - Run `45220463094`: 5 testów Pythona i wszystkie 8 testów Swift zakończone sukcesem. Lokalny CLI Apple odmówił podpisania: `In order to do this, you must be signed into iCloud.` Runner nie ma konta iCloud, więc ta metoda nie jest samowystarczalna w Actions.
 - Druga metoda podpisywania: udokumentowane publiczne API Shortcuty V1, bez klucza API. Rzeczywista próba launchera Safari zwróciła HTTP 200, plik AEA1, profil 0 i zgodne sumy SHA-256 wejścia i wyjścia. Wdrożono tę ścieżkę zapasową tylko dla stałych publicznych szablonów. CI dodatkowo weryfikuje podpis AEA i porównuje rozpakowane pola oraz czynności ze źródłem. Nie wysyłamy ikon użytkownika ani danych osobistych. Weryfikacja zaufania/importu iOS pozostaje w testach urządzenia.
+
+- Run `45221435452`: wszystkie testy i podpisanie/weryfikacja 25 skrótów zakończone sukcesem. Pierwszy build interfejsu iOS wykrył nieprawidłowy wariant inicjalizatora `Section` z jednoczesnym tytułem i stopką. Poprawka: jawne domknięcia `header` i `footer` w sekcji wyboru otwierania.
