@@ -1,0 +1,92 @@
+name: Build IconBridge unsigned IPA
+on:
+  workflow_dispatch:
+  push:
+    branches: [iconbridge]
+    paths: ['IconBridge/**', '.github/workflows/iconbridge-unsigned.yml']
+permissions:
+  contents: write
+concurrency:
+  group: iconbridge-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  build:
+    runs-on: macos-26
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - name: Validate generated sources and core behavior
+        run: |
+          python3 IconBridge/Tools/generate_shortcuts.py
+          python3 IconBridge/Tools/validate.py
+          swift test --package-path IconBridge
+      - name: Sign Shortcuts with Apple's macOS signer
+        run: python3 IconBridge/Tools/sign_shortcuts.py
+      - name: Build unsigned iPhone app
+        run: |
+          xcodebuild -version
+          xcodebuild -project IconBridge/IconBridge.xcodeproj -scheme IconBridge \
+            -configuration Release -destination 'generic/platform=iOS' \
+            -derivedDataPath "$RUNNER_TEMP/iconbridge-device" \
+            CODE_SIGNING_ALLOWED=NO build
+      - name: Package and verify IPA and shortcuts
+        run: |
+          app="$RUNNER_TEMP/iconbridge-device/Build/Products/Release-iphoneos/IconBridge.app"
+          xcrun lipo "$app/IconBridge" -verify_arch arm64
+          if codesign -dv "$app" >/dev/null 2>&1; then
+            echo 'Expected unsigned application'; exit 1
+          fi
+          mkdir -p dist "$RUNNER_TEMP/iconbridge-package/Payload"
+          ditto "$app" "$RUNNER_TEMP/iconbridge-package/Payload/IconBridge.app"
+          ditto -c -k --keepParent "$RUNNER_TEMP/iconbridge-package/Payload" dist/IconBridge-unsigned.ipa
+          python3 IconBridge/Tools/validate.py --ipa dist/IconBridge-unsigned.ipa
+          cp "IconBridge/Resources/Launchers/IconBridge - Importuj.shortcut" dist/
+          ditto -c -k --keepParent IconBridge/Resources/Launchers dist/IconBridge-Shortcuts.zip
+          cp IconBridge/Shortcuts/signing-report.json dist/
+          shasum -a 256 dist/* > dist/SHA256SUMS.txt
+      - name: Build and launch in iPhone Simulator
+        run: |
+          xcodebuild -project IconBridge/IconBridge.xcodeproj -scheme IconBridge \
+            -configuration Debug -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath "$RUNNER_TEMP/iconbridge-sim" CODE_SIGNING_ALLOWED=NO build
+          device="$(xcrun simctl list devices available -j | python3 -c 'import json,sys; d=json.load(sys.stdin); print(next(x["udid"] for k,v in d["devices"].items() if "iOS" in k for x in v if "iPhone" in x["name"]))')"
+          xcrun simctl boot "$device"
+          xcrun simctl bootstatus "$device" -b
+          xcrun simctl install "$device" "$RUNNER_TEMP/iconbridge-sim/Build/Products/Debug-iphonesimulator/IconBridge.app"
+          xcrun simctl launch "$device" com.barury11.iconbridge
+          xcrun simctl io "$device" screenshot dist/IconBridge-Simulator.png
+          xcrun simctl shutdown "$device"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: IconBridge-unsigned-IPA-and-Shortcuts
+          path: dist/*
+          if-no-files-found: error
+      - name: Publish exact-commit prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="iconbridge-0.1.0-${GITHUB_RUN_NUMBER}"
+          cat > "$RUNNER_TEMP/iconbridge-notes.md" <<'NOTES'
+          IconBridge 0.1.0 — osobna aplikacja iOS 17+ do paczek własnych ikon.
+
+          - Pobierz `IconBridge-unsigned.ipa` i podpisz własnym instalatorem.
+          - `IconBridge - Importuj.shortcut`: podpisany przez Apple skrót importu zdjęcia.
+          - `IconBridge-Shortcuts.zip`: 24 gotowe skróty „Otwórz aplikację” i importer.
+          - Instrukcja i dziennik metod: `IconBridge/README.md`, `IconBridge/Docs/EXPERIMENTS.md` w źródłach tego wydania.
+          - Standardowa metoda Apple wymaga wybrania obrazu przy dodaniu skrótu do ekranu. Masowy profil Web Clip jest eksperymentalny i wymaga zatwierdzenia w Ustawieniach. Podmiana pozycji oryginalnych ikon jest ręczna.
+
+          Build urządzenia, testy rdzenia i uruchomienie w symulatorze wykonano w Actions. Zachowanie Web Clip oraz otwieranie aplikacji z ikon należy sprawdzić na fizycznym iPhonie.
+          NOTES
+          gh release create "$tag" dist/* --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" --title "IconBridge 0.1.0 · build ${GITHUB_RUN_NUMBER}" \
+            --prerelease --notes-file "$RUNNER_TEMP/iconbridge-notes.md"
+          gh api "repos/$GITHUB_REPOSITORY/releases/tags/$tag" > "$RUNNER_TEMP/iconbridge-release.json"
+          python3 - "$RUNNER_TEMP/iconbridge-release.json" <<'PY'
+          import json,sys
+          r=json.load(open(sys.argv[1])); names={a['name'] for a in r['assets']}
+          assert r['prerelease'] and r['zipball_url'] and r['tarball_url']
+          assert {'IconBridge-unsigned.ipa','IconBridge-Shortcuts.zip','IconBridge - Importuj.shortcut'} <= names
+          print('Verified prerelease assets and matching source archive links:',r['html_url'])
+          PY
+          echo "### Download IconBridge" >> "$GITHUB_STEP_SUMMARY"
+          gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json url --jq .url >> "$GITHUB_STEP_SUMMARY"

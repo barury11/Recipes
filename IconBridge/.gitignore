@@ -1,0 +1,7 @@
+.build/
+.swiftpm/
+.DS_Store
+Resources/Launchers/*.shortcut
+Shortcuts/signing-report.json
+Shortcuts/Unsigned/
+Tools/__pycache__/
